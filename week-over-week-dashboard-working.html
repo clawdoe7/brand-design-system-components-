@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GoAdapt — Week-over-Week Performance Comparison</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Michroma&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════
+   TBPN ROOT TOKENS  (brand-tokens.json direct)
+   ══════════════════════════════════════════════════ */
+:root{
+  /* Core palette */
+  --tbpn-black:#020403;
+  --tbpn-studio:#050808;
+  --tbpn-panel:rgba(3,10,8,0.80);
+  --tbpn-green:#18D39C;
+  --tbpn-green-bright:#6AFFD2;
+  --tbpn-green-deep:#0D7859;
+  --tbpn-chrome-light:#EAF0F7;
+  --tbpn-chrome-mid:#98A9C8;
+  --tbpn-chrome-dark:#485668;
+  --tbpn-text:#F3F6FB;
+  --tbpn-muted:#9FB1CA;
+  --tbpn-line:rgba(131,255,210,0.17);
+  --tbpn-line-chrome:rgba(170,186,223,0.22);
+  /* Gradients */
+  --tbpn-chrome-gradient:linear-gradient(180deg,#F7FBFF 0%,#B7C5DD 48%,#4B5C73 100%);
+  --tbpn-green-gradient:linear-gradient(180deg,#2DE7A9 0%,#0F8C63 100%);
+  --tbpn-panel-gradient:linear-gradient(180deg,rgba(6,12,10,0.92),rgba(3,7,6,0.96));
+  /* Shadows */
+  --tbpn-glow:0 0 24px rgba(29,229,164,0.45),0 0 72px rgba(29,229,164,0.22);
+  --tbpn-panel-shadow:inset 0 1px 0 rgba(255,255,255,0.05),0 0 36px rgba(10,255,180,0.18);
+  /* Dashboard tokens */
+  --current:#52E0AE;
+  --previous:#6D7891;
+  --negative:#C85A58;
+  --g:#52E0AE;--gbg:rgba(82,224,174,.12);
+  --r:#C85A58;--rbg:rgba(200,90,88,.12);
+  /* Dashboard spacing */
+  --page-pad:20px;
+  --section-gap:20px;
+  --sub-gap:12px;
+  --card-gap:8px;
+  /* Dashboard card */
+  --card-pad:12px;
+  --card-r:4px;
+  --card-min:82px;
+  --card-title:11px;
+  --card-metric:clamp(2rem,3vw,2.5rem);
+  --card-meta:9px;
+  /* Dashboard chart */
+  --chart-title:11px;
+  --chart-grid:rgba(159,177,202,0.10);
+  --chart-axis:#9FB1CA;
+  /* Dashboard chip */
+  --chip-h:28px;
+  --chip-px:12px;
+  --chip-r:4px;
+  --chip-text:11px;
+  /* Tab */
+  --tab-h:34px;
+  --tab-px:14px;
+}
+
+/* ══════════════════════════════════════════════════
+   RESET & BASE  (Recipe 13 + 15: crispness)
+   ══════════════════════════════════════════════════ */
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  margin:0;min-height:100vh;
+  background:
+    radial-gradient(circle at 50% -12%, rgba(96, 255, 208, 0.14), transparent 28%),
+    radial-gradient(circle at 50% 18%, rgba(24, 211, 156, 0.12), transparent 32%),
+    linear-gradient(180deg, #030706 0%, #020403 36%, #010202 100%);
+  color:var(--tbpn-text);
+  font-family:'Rajdhani',sans-serif;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+}
+
+/* ══════════════════════════════════════════════════
+   BACKGROUND LAYERS  (Recipe 3: scanline + atmosphere)
+   ══════════════════════════════════════════════════ */
+.tbpn-bg-lines,
+.tbpn-bg-atmosphere{
+  position:fixed;inset:0;pointer-events:none;
+}
+.tbpn-bg-lines{
+  z-index:0;
+  background-image:linear-gradient(
+    to bottom,
+    #005947 0px,#00AD73 1px,#59E6BF 2px,#00AD73 3px,#005947 4px
+  );
+  background-size:100% 4px;
+  background-repeat:repeat;
+  opacity:0.12;
+  mask-image:linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.9) 24%, #000 48%, rgba(0,0,0,0.92) 100%);
+}
+.tbpn-bg-atmosphere{
+  z-index:0;
+  background:
+    radial-gradient(circle at 50% 16%, rgba(106,255,210,0.28), transparent 20%),
+    radial-gradient(circle at 50% 42%, rgba(24,211,156,0.14), transparent 34%),
+    linear-gradient(
+      to top,
+      #ffffff 0%,#59E6BF 4%,#00AD99 15%,#00241C 34%,#000000 68%
+    );
+  mix-blend-mode:multiply;
+  opacity:0.88;
+}
+.tbpn-app{
+  position:relative;z-index:1;
+}
+.tbpn-app::before{
+  content:"";
+  position:fixed;
+  inset:68px 8% auto;
+  height:220px;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 35%, rgba(106,255,210,0.18), transparent 38%),
+    linear-gradient(180deg, rgba(14, 48, 37, 0.55), rgba(2, 5, 4, 0));
+  filter:blur(28px);
+  opacity:0.8;
+}
+
+/* ══════════════════════════════════════════════════
+   TITLE RAIL
+   ══════════════════════════════════════════════════ */
+.hdr{
+  position:sticky;
+  top:0;
+  z-index:30;
+  padding:22px var(--page-pad) 18px;
+  border-bottom:1px solid var(--tbpn-line);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+  background:
+    repeating-linear-gradient(180deg, rgba(89,230,191,0.045) 0 1px, rgba(89,230,191,0) 1px 4px),
+    radial-gradient(circle at 50% -10%, rgba(97,255,203,0.12), transparent 42%),
+    linear-gradient(180deg, rgba(10, 22, 18, 0.97), rgba(3, 8, 6, 0.985) 58%, rgba(2, 4, 3, 0.99));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.05),
+    inset 0 -1px 0 rgba(24,211,156,0.08),
+    0 8px 24px rgba(0,0,0,0.24);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+.hdr h1{
+  font-family:'Michroma',sans-serif;font-size:16px;font-weight:400;
+  letter-spacing:0.1em;text-transform:uppercase;
+  /* Recipe 4: chrome headline */
+  color:transparent;
+  background:var(--tbpn-chrome-gradient);
+  -webkit-background-clip:text;background-clip:text;
+  filter:drop-shadow(0 3px 1px rgba(0,0,0,0.96));
+}
+.hdr h1 span{
+  background:linear-gradient(180deg, #eef3fa 0%, #cbd5e2 46%, #9aa7bb 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  filter:none;
+}
+.hdr .sub{
+  font-family:'Michroma',sans-serif;color:#8497b0;font-size:10px;
+  letter-spacing:0.13em;text-transform:uppercase;margin-top:8px;
+  opacity:0.92;
+}
+.hdr .brand-mark{
+  font-family:'Michroma',sans-serif;font-size:10px;letter-spacing:0.2em;
+  text-transform:uppercase;color:#6d7b94;
+}
+.ctr{
+  position:relative;
+  max-width:1320px;
+  margin:0 auto;
+  padding:20px var(--page-pad) 36px;
+}
+.ctr::before{
+  content:"";
+  position:absolute;
+  inset:0 0 auto;
+  height:310px;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(24,211,156,0.10), transparent 52%),
+    linear-gradient(180deg, rgba(7, 16, 13, 0.55), rgba(7, 16, 13, 0));
+  opacity:0.95;
+}
+.ctr > *{
+  position:relative;
+  z-index:1;
+}
+
+/* ══════════════════════════════════════════════════
+   GLOBAL FILTERS / MODE TOGGLES  (Addendum 7)
+   ══════════════════════════════════════════════════ */
+.controls{
+  display:flex;
+  gap:var(--sub-gap);
+  flex-wrap:wrap;
+  align-items:center;
+  margin-bottom:14px;
+  padding:14px 16px;
+  border:1px solid rgba(24,211,156,0.14);
+  border-radius:8px;
+  background:linear-gradient(180deg, rgba(5, 10, 9, 0.9), rgba(2, 5, 5, 0.82));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.wk-tog,.view-tog{
+  display:flex;gap:0;
+  background:linear-gradient(180deg, rgba(10, 14, 17, 0.95), rgba(4, 6, 7, 0.98));
+  border-radius:6px;padding:3px;
+  border:1px solid rgba(139, 157, 182, 0.18);
+}
+.wk-btn,.view-btn{
+  padding:0 var(--tab-px);border-radius:3px;height:var(--tab-h);
+  display:flex;align-items:center;
+  font-family:'Michroma',sans-serif;font-size:10px;letter-spacing:0.055em;
+  text-transform:uppercase;font-weight:500;
+  cursor:pointer;transition:all 180ms ease;color:#94a7c0;
+  position:relative;
+}
+.wk-btn.ac,.view-btn.ac{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0) 28%),
+    linear-gradient(180deg, #41e4af 0%, #24c793 56%, #139d6e 100%);
+  color:#07110d;
+  font-weight:700;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.2),
+    inset 0 -1px 0 rgba(0,0,0,0.12),
+    0 0 20px rgba(29,229,164,0.24);
+  border:1px solid rgba(152,255,222,0.65);
+  text-shadow:none;
+}
+.wk-btn:hover,.view-btn:hover{color:var(--tbpn-text);}
+
+/* ══════════════════════════════════════════════════
+   ACCOUNT FILTER CHIPS  (Recipe 10: unified one-color)
+   ══════════════════════════════════════════════════ */
+.tog{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+.tb{
+  display:inline-flex;align-items:center;justify-content:center;
+  height:var(--chip-h);padding:0 var(--chip-px);border-radius:var(--chip-r);
+  border:1px solid rgba(24,211,156,0.28);
+  background:rgba(5,8,8,0.92);
+  color:#C8D3E4;
+  font-family:'Rajdhani',sans-serif;font-size:var(--chip-text);font-weight:700;
+  letter-spacing:0.035em;text-transform:uppercase;
+  cursor:pointer;transition:all 180ms ease;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.03);
+}
+.tb:hover{
+  border-color:rgba(106,255,210,0.55);
+  color:var(--tbpn-text);
+  transform:translateY(-1px);
+}
+.tb.ac{
+  background:linear-gradient(180deg,rgba(45,231,169,0.28),rgba(15,140,99,0.28));
+  border-color:#43E7B1;
+  color:#F3F6FB;
+  box-shadow:0 0 16px rgba(24,211,156,0.14);
+}
+
+/* ══════════════════════════════════════════════════
+   KPI CARDS  (Recipe 9)
+   ══════════════════════════════════════════════════ */
+.kg{
+  display:grid;
+  grid-template-columns:repeat(12,minmax(0,1fr));
+  gap:10px;
+  margin-bottom:22px;
+}
+.kpi{
+  grid-column:span 3;
+  min-height:var(--card-min);
+  padding:12px var(--card-pad) 11px;
+  border:1px solid rgba(24,211,156,0.18);
+  border-radius:6px;
+  background:var(--tbpn-panel-gradient);
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.04),
+    0 0 0 1px rgba(0,0,0,0.18);
+}
+.kpi::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:var(--tbpn-green-gradient);opacity:0.45;
+}
+.kpi::after{
+  content:"";
+  position:absolute;
+  inset:auto 10% -42px;
+  height:64px;
+  background:radial-gradient(circle, rgba(24,211,156,0.16), transparent 70%);
+  filter:blur(20px);
+  opacity:0.34;
+}
+.kpi:nth-child(-n+4){
+  min-height:96px;
+  border-color:rgba(106,255,210,0.22);
+  background:
+    linear-gradient(180deg, rgba(7, 16, 14, 0.96), rgba(2, 5, 5, 0.96)),
+    radial-gradient(circle at 20% 0%, rgba(106,255,210,0.05), transparent 42%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.05),
+    0 0 26px rgba(24,211,156,0.07);
+}
+.kg .kpi:nth-child(n+5){
+  grid-column:span 2;
+}
+.kpi .l{
+  font-family:'Michroma',sans-serif;font-size:12px;letter-spacing:0.035em;
+  text-transform:uppercase;color:#c1ccda;margin-bottom:6px;
+  max-width:90%;
+  min-height:24px;
+  padding-right:64px;
+}
+.kpi .v{
+  font-size:clamp(2.15rem, 3.15vw, 2.8rem);font-weight:700;line-height:0.94;
+  color:var(--tbpn-text);
+  margin-top:0;
+}
+.kpi .delta{
+  position:absolute;top:10px;right:10px;
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:44px;height:28px;
+  font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:800;
+  padding:0 8px;border-radius:4px;
+  line-height:1;
+}
+.kpi .delta.up{
+  background:linear-gradient(180deg, rgba(62,196,143,0.24), rgba(18,88,64,0.24));
+  color:#8cf1cc;
+  border:1px solid rgba(82,224,174,0.24);
+}
+.kpi .delta.down{
+  background:linear-gradient(180deg, rgba(98,38,36,0.32), rgba(52,20,19,0.32));
+  color:#ef827f;
+  border:1px solid rgba(200,90,88,0.24);
+}
+.kpi .delta.flat{
+  background:rgba(5,8,8,0.92);
+  color:var(--tbpn-muted);
+  border:1px solid #2a313b;
+}
+.kpi .prev{
+  font-size:11px;
+  color:#a7b4c6;
+  margin-top:auto;
+  font-weight:600;
+  letter-spacing:0.015em;
+}
+
+/* ══════════════════════════════════════════════════
+   FRAMED PANELS  (Recipe 8 — glow on major frames only)
+   ══════════════════════════════════════════════════ */
+.cr{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  margin-bottom:18px;
+}
+@media(max-width:900px){.cr{grid-template-columns:1fr;}}
+
+/* Recipe 11: chart panel */
+.cc{
+  padding:16px 16px 14px;
+  border:1px solid rgba(24,211,156,0.14);
+  border-radius:6px;
+  background:
+    linear-gradient(180deg, rgba(7, 12, 11, 0.985), rgba(2, 5, 5, 0.985)),
+    radial-gradient(circle at 50% -12%, rgba(106,255,210,0.05), transparent 44%),
+    linear-gradient(180deg, rgba(106,255,210,0.035), transparent 18%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.03),
+    inset 0 12px 28px rgba(106,255,210,0.018);
+  position:relative;
+}
+.cc.full{grid-column:1/-1;}
+.cc::before{
+  content:"";
+  position:absolute;
+  top:0;left:16px;right:16px;height:1px;
+  background:linear-gradient(90deg, transparent, rgba(106,255,210,0.55), transparent);
+  opacity:0.55;
+}
+.cc h3{
+  font-family:'Michroma',sans-serif;font-size:14px;letter-spacing:0.04em;
+  text-transform:uppercase;font-weight:400;
+  margin-bottom:12px;color:#f2f6fb;
+  text-shadow:0 1px 0 rgba(0,0,0,0.9), 0 0 10px rgba(255,255,255,0.04);
+  padding-bottom:10px;border-bottom:1px solid rgba(159,177,202,0.08);
+}
+
+/* ══════════════════════════════════════════════════
+   COMPARISON BARS  (Chart Rules: current=#52E0AE, previous=#6D7891)
+   ══════════════════════════════════════════════════ */
+.cmp-chart{display:flex;flex-direction:column;gap:16px;}
+.cmp-row{display:flex;flex-direction:column;gap:1px;}
+.cmp-label{
+  font-size:13px;
+  color:#e2e9f2;
+  font-weight:700;
+  letter-spacing:0.025em;
+  text-transform:uppercase;
+}
+.cmp-bars{display:flex;flex-direction:column;gap:1px;}
+.cmp-bar-row{display:flex;align-items:center;gap:8px;}
+.cmp-wk{
+  font-family:'Michroma',sans-serif;
+  font-size:8px;
+  color:#8898ae;
+  width:32px;
+  flex-shrink:0;
+  text-align:right;
+  letter-spacing:0.04em;
+}
+.cmp-track{
+  flex:1;
+  height:20px;
+  background:
+    linear-gradient(180deg, rgba(7,11,11,0.98), rgba(3,6,6,0.96)),
+    linear-gradient(90deg, rgba(106,255,210,0.018), transparent 34%);
+  border-radius:3px;
+  overflow:hidden;
+  border:1px solid rgba(159,177,202,0.08);
+  box-shadow:
+    inset 0 1px 2px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.02);
+}
+.cmp-fill{
+  height:100%;
+  border-radius:2px;
+  display:flex;
+  align-items:center;
+  padding-left:8px;
+  font-size:11px;
+  font-weight:700;
+  color:#07110d;
+  transition:width .5s ease;
+  min-width:18px;
+  text-shadow:none;
+}
+.cmp-fill.previous{
+  background:
+    repeating-linear-gradient(180deg, rgba(255,255,255,0.10) 0 1px, rgba(255,255,255,0) 1px 3px),
+    linear-gradient(180deg, #b1bbcf 0%, #7a859b 56%, #515c70 100%) !important;
+  color:#07110d;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.14);
+}
+.cmp-fill.current{
+  background:
+    repeating-linear-gradient(180deg, rgba(255,255,255,0.10) 0 1px, rgba(255,255,255,0) 1px 3px),
+    linear-gradient(180deg, #a8f4d9 0%, #59e0ae 54%, #21b57f 100%) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.18);
+}
+.fill-opt-1 .cmp-fill.previous,
+.fill-opt-2 .cmp-fill.previous,
+.fill-opt-3 .cmp-fill.previous,
+.fill-opt-4 .cmp-fill.previous,
+.fill-opt-5 .cmp-fill.previous{
+  color:#f6f8fb;
+}
+.fill-opt-1 .cmp-fill.current{
+  background:
+    repeating-linear-gradient(180deg, rgba(255,255,255,0.10) 0 1px, rgba(255,255,255,0) 1px 3px),
+    linear-gradient(180deg, #b7f7df 0%, #73ebc1 46%, #33c892 100%) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.24),
+    inset 0 -1px 0 rgba(0,0,0,0.1);
+}
+.fill-opt-1 .cmp-fill.previous{
+  background:
+    repeating-linear-gradient(180deg, rgba(255,255,255,0.11) 0 1px, rgba(255,255,255,0) 1px 3px),
+    linear-gradient(180deg, #c6cfdf 0%, #909aaf 54%, #697388 100%) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.16);
+}
+.fill-opt-2 .cmp-fill.current{
+  background:
+    repeating-linear-gradient(180deg, rgba(255,255,255,0.08) 0 1px, rgba(255,255,255,0) 1px 4px),
+    linear-gradient(180deg, rgba(255,255,255,0.14), transparent 34%),
+    radial-gradient(circle at 50% 50%, rgba(184,255,228,0.18), transparent 58%),
+    linear-gradient(180deg, #aef5dc 0%, #5adfad 52%, #1eb07a 100%) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.2),
+    0 0 14px rgba(82,224,174,0.18);
+}
+.fill-opt-2 .cmp-fill.previous{
+  background:
+    repeating-linear-gradient(180deg, rgba(255,255,255,0.08) 0 1px, rgba(255,255,255,0) 1px 4px),
+    linear-gradient(180deg, rgba(255,255,255,0.12), transparent 34%),
+    linear-gradient(180deg, #c8d0e0 0%, #919aae 52%, #626d82 100%) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.14);
+}
+.fill-opt-3 .cmp-fill.current{
+  background:
+    repeating-linear-gradient(180deg, rgba(255,255,255,0.10) 0 1px, rgba(255,255,255,0) 1px 3px),
+    linear-gradient(180deg, #a8f4d9 0%, #59e0ae 54%, #21b57f 100%) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.18);
+  color:#07110d;
+}
+.fill-opt-3 .cmp-fill.previous{
+  background:
+    repeating-linear-gradient(180deg, rgba(255,255,255,0.10) 0 1px, rgba(255,255,255,0) 1px 3px),
+    linear-gradient(180deg, #c2cbdd 0%, #8892a8 56%, #5e687d 100%) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.14);
+  color:#07110d;
+}
+.fill-opt-4 .cmp-fill.current{
+  background:
+    repeating-linear-gradient(180deg, rgba(255,255,255,0.09) 0 1px, rgba(255,255,255,0) 1px 4px),
+    linear-gradient(180deg, #bcf9e4 0%, #77edc5 46%, #3acb97 100%) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.16);
+}
+.fill-opt-4 .cmp-fill.previous{
+  background:
+    repeating-linear-gradient(180deg, rgba(255,255,255,0.09) 0 1px, rgba(255,255,255,0) 1px 4px),
+    linear-gradient(180deg, #d0d8e6 0%, #9da7ba 48%, #727d91 100%) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.12);
+}
+.fill-opt-5 .cmp-fill.current{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0) 32%),
+    repeating-linear-gradient(180deg, rgba(5,18,13,0.08) 0 1px, rgba(5,18,13,0) 1px 4px),
+    radial-gradient(circle at 80% 50%, rgba(191,255,231,0.18), transparent 42%),
+    linear-gradient(180deg, #b5f8df 0%, #6be6ba 44%, #27ba84 100%) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.24),
+    inset 0 -1px 0 rgba(0,0,0,0.08);
+}
+.fill-opt-5 .cmp-fill.previous{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0) 32%),
+    repeating-linear-gradient(180deg, rgba(255,255,255,0.08) 0 1px, rgba(255,255,255,0) 1px 4px),
+    radial-gradient(circle at 78% 50%, rgba(255,255,255,0.10), transparent 40%),
+    linear-gradient(180deg, #cdd5e3 0%, #98a2b6 46%, #687287 100%) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.18),
+    inset 0 -1px 0 rgba(0,0,0,0.06);
+}
+
+.bar-lab{
+  margin-bottom:18px;
+}
+.bar-lab-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+  gap:14px;
+}
+.bar-lab-grid .cc{
+  min-height:100%;
+}
+.opt-note{
+  font-size:12px;
+  line-height:1.6;
+  color:#8fa1b9;
+  font-weight:600;
+  margin:-2px 0 12px;
+}
+
+/* ══════════════════════════════════════════════════
+   TABLE  (Addendum 10: dense, compact, scannable)
+   ══════════════════════════════════════════════════ */
+.wow-table{width:100%;border-collapse:collapse;font-size:13px;}
+.wow-table th{
+  background:rgba(5,8,8,0.95);
+  padding:10px var(--card-pad);text-align:left;
+  font-family:'Michroma',sans-serif;font-size:9px;font-weight:400;
+  letter-spacing:0.08em;text-transform:uppercase;
+  color:#90a0b7;border-bottom:1px solid var(--tbpn-line);
+}
+.wow-table thead tr:first-child th{
+  padding-top:12px;
+  padding-bottom:12px;
+  font-size:10px;
+  color:#d8e2ee;
+  background:
+    linear-gradient(180deg, rgba(12,18,18,0.98), rgba(6,9,9,0.98)),
+    linear-gradient(90deg, rgba(106,255,210,0.03), transparent 40%);
+  border-bottom:1px solid rgba(159,177,202,0.12);
+}
+.wow-table thead tr:nth-child(2) th{
+  padding-top:12px;
+  padding-bottom:12px;
+  font-size:9px;
+  color:#aab8ca;
+  background:rgba(7,11,11,0.96);
+}
+.wow-table td{
+  padding:11px var(--card-pad);
+  border-top:1px solid rgba(159,177,202,0.06);
+  font-weight:600;
+  min-height:30px;
+  color:#d5deea;
+}
+.wow-table tbody tr:nth-child(odd){background:rgba(255,255,255,0.008);}
+.wow-table tbody tr:hover{background:rgba(24,211,156,0.04);}
+.wow-table .up{color:var(--g);} .wow-table .down{color:var(--r);} .wow-table .flat{color:var(--tbpn-muted);}
+.wow-table td:first-child{
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.02em;
+  color:#f0f5fb;
+  text-shadow:0 1px 0 rgba(0,0,0,0.85);
+}
+/* Right-align numeric columns */
+.wow-table td:not(:first-child){text-align:right;}
+.wow-table th:not(:first-child){text-align:right;}
+.wow-table th:nth-child(4), .wow-table td:nth-child(4),
+.wow-table th:nth-child(7), .wow-table td:nth-child(7),
+.wow-table th:nth-child(10), .wow-table td:nth-child(10),
+.wow-table th:nth-child(13), .wow-table td:nth-child(13){
+  border-right:1px solid rgba(159,177,202,0.08);
+}
+
+/* ══════════════════════════════════════════════════
+   SUMMARY / INSIGHT PANEL  (Addendum 12)
+   ══════════════════════════════════════════════════ */
+.insight{
+  position:relative;
+  padding:16px 16px 15px 18px;
+  border:1px solid rgba(24,211,156,0.16);
+  border-radius:8px;
+  background:
+    linear-gradient(180deg, rgba(8, 15, 13, 0.98), rgba(3, 7, 6, 0.98)),
+    radial-gradient(circle at 14% 0%, rgba(106,255,210,0.08), transparent 36%);
+  margin-bottom:14px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.04),
+    0 0 32px rgba(0,153,102,0.12);
+}
+.insight::before{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:2px;
+  background:linear-gradient(180deg, rgba(106,255,210,0.85), rgba(24,211,156,0.2));
+}
+.insight h3{
+  font-family:'Michroma',sans-serif;font-size:14px;letter-spacing:0.045em;
+  text-transform:uppercase;font-weight:400;
+  margin-bottom:12px;color:var(--tbpn-chrome-light);
+  padding-bottom:10px;border-bottom:1px solid rgba(159,177,202,0.08);
+}
+.insight p{font-size:14px;color:#9fafc5;line-height:1.72;font-weight:600;}
+.insight .hi{color:var(--tbpn-green-bright);font-weight:700;}
+.insight .good{color:var(--current);font-weight:700;}
+.insight .warn{color:#eab308;font-weight:700;}
+.insight .bad{color:var(--negative);font-weight:700;}
+.insight .team{color:var(--tbpn-chrome-light);font-weight:700;letter-spacing:0.04em;}
+
+/* ══════════════════════════════════════════════════
+   SECTION TITLES
+   ══════════════════════════════════════════════════ */
+.sec{
+  font-family:'Michroma',sans-serif;font-size:13px;letter-spacing:0.045em;
+  text-transform:uppercase;font-weight:400;
+  margin-bottom:14px;display:flex;align-items:center;gap:8px;
+  color:var(--tbpn-chrome-light);
+}
+.sec .dot{width:6px;height:6px;border-radius:2px;background:var(--tbpn-green);box-shadow:0 0 12px rgba(24,211,156,0.45);}
+
+/* ══════════════════════════════════════════════════
+   ACCOUNT CARDS  (unified color, no per-company)
+   ══════════════════════════════════════════════════ */
+.acmp{display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:var(--card-gap);margin-bottom:var(--section-gap);}
+.acard{
+  padding:14px 14px 12px;
+  border:1px solid rgba(24,211,156,0.16);
+  border-radius:6px;
+  background:
+    linear-gradient(180deg, rgba(7, 12, 11, 0.975), rgba(2, 5, 5, 0.985)),
+    radial-gradient(circle at 50% -8%, rgba(106,255,210,0.04), transparent 40%),
+    linear-gradient(180deg, rgba(106,255,210,0.028), transparent 16%);
+  position:relative;
+  overflow:hidden;
+}
+.acard::before{
+  content:"";
+  position:absolute;
+  top:0;left:0;right:0;
+  height:58px;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(106,255,210,0.08), transparent 34%),
+    linear-gradient(180deg, rgba(106,255,210,0.028), transparent 80%);
+  opacity:0.9;
+}
+.acard h3{
+  position:relative;
+  z-index:1;
+  font-family:'Michroma',sans-serif;font-size:14px;font-weight:400;
+  margin-bottom:12px;letter-spacing:0.028em;text-transform:uppercase;
+  color:#f2f6fb;
+  text-shadow:0 1px 0 rgba(0,0,0,0.9), 0 0 10px rgba(255,255,255,0.04);
+  padding-bottom:10px;
+  border-bottom:1px solid rgba(159,177,202,0.08);
+}
+.acard .row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(159,177,202,0.05);font-size:13px;}
+.acard .row .metric{
+  color:#bcc8d8;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:0.025em;
+}
+.acard .row .vals{display:flex;gap:16px;}
+.acard .row .w1,.acard .row .w2{width:52px;text-align:right;font-weight:700;}
+.acard .row .w1{color:#c3cedc;}
+.acard .row .w2{color:var(--tbpn-text);}
+.acard .row .chg{width:54px;text-align:right;font-weight:700;font-size:11px;}
+.acard .legend{
+  font-family:'Michroma',sans-serif;
+  font-size:9px;
+  color:#889ab2;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  padding:0 0 8px;
+  margin:-2px 0 6px;
+  border-bottom:1px solid rgba(159,177,202,0.05);
+}
+.acard .legend .metric-spacer{
+  flex:1;
+}
+.acard .legend .vals{
+  display:flex;
+  gap:16px;
+}
+.acard .legend .w1,.acard .legend .w2{
+  width:52px;
+  text-align:right;
+}
+.acard .legend .chg{
+  width:54px;
+  text-align:right;
+}
+
+/* ══════════════════════════════════════════════════
+   BADGES
+   ══════════════════════════════════════════════════ */
+.badge{padding:2px 7px;border-radius:3px;font-size:10px;font-weight:700;font-family:'Rajdhani',sans-serif;}
+.badge.up{background:var(--gbg);color:var(--g);border:1px solid rgba(82,224,174,0.18);}
+.badge.down{background:var(--rbg);color:var(--r);border:1px solid rgba(200,90,88,0.18);}
+.badge.flat{background:rgba(5,8,8,0.92);color:var(--tbpn-muted);}
+
+/* ══════════════════════════════════════════════════
+   EMPTY STATE  (Recipe 12)
+   ══════════════════════════════════════════════════ */
+.tbpn-empty{
+  display:grid;place-items:center;min-height:120px;
+  border:1px dashed rgba(159,177,202,0.14);border-radius:6px;
+  color:var(--chart-axis);text-transform:uppercase;
+  letter-spacing:0.04em;font-size:11px;
+  font-family:'Michroma',sans-serif;
+  background:linear-gradient(180deg, rgba(7, 12, 11, 0.82), rgba(3, 5, 5, 0.82));
+}
+
+/* Panels */
+.panel{display:none;} .panel.ac{display:block;}
+
+/* ══════════════════════════════════════════════════
+   RESPONSIVE  (Addendum 4: tablet/mobile padding)
+   ══════════════════════════════════════════════════ */
+@media(max-width:768px){
+  :root{--page-pad:12px;}
+  .hdr{padding:12px var(--page-pad) 10px;}
+  .hdr h1{font-size:11px;}
+  .hdr .sub{font-size:8px;}
+  .controls{flex-direction:column;align-items:stretch;}
+  .wk-tog,.view-tog{width:100%;}
+  .wk-btn,.view-btn{flex:1;justify-content:center;padding:0 8px;font-size:9px;}
+  .kg{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .kpi,.kg .kpi:nth-child(n+5){grid-column:span 1;min-height:92px;}
+  .acmp{grid-template-columns:1fr;}
+  .cr{grid-template-columns:1fr;}
+}
+@media(min-width:769px) and (max-width:1024px){
+  :root{--page-pad:16px;}
+  .kg{grid-template-columns:repeat(6,minmax(0,1fr));}
+  .kpi,.kg .kpi:nth-child(n+5){grid-column:span 2;}
+}
+</style>
+</head>
+<body>
+<!-- Recipe 3: layered background -->
+<div class="tbpn-bg-lines"></div>
+<div class="tbpn-bg-atmosphere"></div>
+
+<div class="tbpn-app">
+<div class="hdr">
+<div>
+  <h1><span>Performance Overview</span></h1>
+</div>
+</div>
+<div class="ctr">
+
+<!-- Global filters / mode toggles -->
+<div class="controls">
+<div class="wk-tog">
+<div class="wk-btn ac" data-wk="both">Both Weeks</div>
+<div class="wk-btn" data-wk="w1">Wk 1 (3/20-27)</div>
+<div class="wk-btn" data-wk="w2">Wk 2 (3/28-4/3)</div>
+</div>
+<div class="view-tog">
+<div class="view-btn ac" data-view="all">All Metrics</div>
+<div class="view-btn" data-view="media">Media Buying</div>
+<div class="view-btn" data-view="cc">Call Center</div>
+</div>
+</div>
+
+<!-- Account filter chips -->
+<div class="tog" id="tbar"></div>
+
+<!-- BOTH WEEKS -->
+<div class="panel ac" id="p-both">
+<div class="kg" id="bothKPI"></div>
+<div class="sec"><div class="dot"></div>Week-over-Week by Account</div>
+<div class="acmp" id="bothAccts"></div>
+<div class="cr">
+<div class="cc"><h3>S1 Transfer Rate &mdash; WoW</h3><div class="cmp-chart" id="cmpS1"></div></div>
+<div class="cc"><h3>S2 Transfer Rate &mdash; WoW</h3><div class="cmp-chart" id="cmpS2"></div></div>
+</div>
+<div class="cr">
+<div class="cc"><h3>S2 of S1 (Call Center Efficiency) &mdash; WoW</h3><div class="cmp-chart" id="cmpS2ofS1"></div></div>
+<div class="cc"><h3>Qualification Rate &mdash; WoW</h3><div class="cmp-chart" id="cmpQual"></div></div>
+</div>
+<div class="cr">
+<div class="cc"><h3>Avg Sq/Ft (Qualified) &mdash; WoW</h3><div class="cmp-chart" id="cmpSqft"></div></div>
+<div class="cc"><h3>Avg Distance (Qualified) &mdash; WoW</h3><div class="cmp-chart" id="cmpDist"></div></div>
+</div>
+<div class="cr">
+<div class="cc full"><h3>Full Metrics Comparison Table</h3><div style="overflow-x:auto;"><table class="wow-table" id="wowTable"></table></div></div>
+</div>
+</div>
+
+<!-- SINGLE WEEK -->
+<div class="panel" id="p-single">
+<div class="kg" id="singleKPI"></div>
+<div class="cr">
+<div class="cc"><h3>Leads by Account</h3><div class="cmp-chart" id="sAcct"></div></div>
+<div class="cc"><h3>Qualification Rate</h3><div class="cmp-chart" id="sQual"></div></div>
+</div>
+<div class="cr">
+<div class="cc"><h3>S1 Transfer Rate</h3><div class="cmp-chart" id="sS1"></div></div>
+<div class="cc"><h3>S2 of S1 (Call Center)</h3><div class="cmp-chart" id="sS2ofS1"></div></div>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+// === WEEK 1 DATA (3/20-3/27) ===
+const W1=[
+{c:"3/20/2026",co:"Michaels Asphalt Paving Company",n:"Gilfredo Franceschi",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:7557,d:72},
+{c:"3/20/2026",co:"Michaels Asphalt Paving Company",n:"Andy Harvill",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:3000,d:63},
+{c:"3/20/2026",co:"Michaels Asphalt Paving Company",n:"Freddie Kelly",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:2156,d:11},
+{c:"3/20/2026",co:"North Cal Paving",n:"Albert Butterfield",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:0,d:92},
+{c:"3/20/2026",co:"North Cal Paving",n:"LordOfThePacificEmpire",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:400,d:125},
+{c:"3/20/2026",co:"North Cal Paving",n:"Al Giddings",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:0,d:0},
+{c:"3/20/2026",co:"Michaels Asphalt Paving Company",n:"Craig Decormier Sr.",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1995,d:30},
+{c:"3/20/2026",co:"Paving Pro",n:"Randy Hodges",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:987,d:53},
+{c:"3/20/2026",co:"Michaels Asphalt Paving Company",n:"Ronald Cochran",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1355,d:53},
+{c:"3/20/2026",co:"Michaels Asphalt Paving Company",n:"Jemetric Walker",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:593,d:16},
+{c:"3/21/2026",co:"Michaels Asphalt Paving Company",n:"Monroe Simpson Leflore",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:2546,d:96},
+{c:"3/21/2026",co:"Michaels Asphalt Paving Company",n:"Barbara Gregory",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:2027,d:8},
+{c:"3/21/2026",co:"North Cal Paving",n:"adam",s1:"No",s2:"Yes",ov:"No",cm:"No",px:"No",sq:"No",sf:0,d:79},
+{c:"3/21/2026",co:"Ultimate Asphalt",n:"Chad Lucas",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:2157,d:19},
+{c:"3/21/2026",co:"Ultimate Asphalt",n:"Kumar L S Rachuri",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1256,d:23},
+{c:"3/21/2026",co:"Ultimate Asphalt",n:"Tiletha Franklin",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:440,d:9},
+{c:"3/21/2026",co:"Ultimate Asphalt",n:"Drew Stiegler",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:7496,d:56},
+{c:"3/21/2026",co:"Ultimate Asphalt",n:"Jodie Reeder Jr",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:435,d:15},
+{c:"3/21/2026",co:"Ultimate Asphalt",n:"Jamee Marie Cannon",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:427,d:6},
+{c:"3/21/2026",co:"Ultimate Asphalt",n:"Linda",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:0,d:19},
+{c:"3/21/2026",co:"Michaels Asphalt Paving Company",n:"Demetrius Dawkins",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1952,d:27},
+{c:"3/21/2026",co:"Michaels Asphalt Paving Company",n:"Shirley B Vilchis",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1936,d:46},
+{c:"3/21/2026",co:"Michaels Asphalt Paving Company",n:"Abad Clemente Nolasco",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1833,d:40},
+{c:"3/21/2026",co:"Ultimate Asphalt",n:"Scott Smith",s1:"No",s2:"Yes",ov:"No",cm:"No",px:"No",sq:"Yes",sf:3836,d:111},
+{c:"3/21/2026",co:"One way Asphalt",n:"John Carl Grazier",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1568,d:19},
+{c:"3/21/2026",co:"Michaels Asphalt Paving Company",n:"Paul Pj Moore",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:0,d:0},
+{c:"3/21/2026",co:"Michaels Asphalt Paving Company",n:"Gerardo Fuentes",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1312,d:60},
+{c:"3/21/2026",co:"Michaels Asphalt Paving Company",n:"Herb Potts",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:895,d:32},
+{c:"3/21/2026",co:"Michaels Asphalt Paving Company",n:"John Francie Chuquillanqui",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:772,d:26},
+{c:"3/21/2026",co:"Michaels Asphalt Paving Company",n:"Michael Hipps",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:7,d:1},
+{c:"3/22/2026",co:"North Cal Paving",n:"Jonas Tesfay",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:0,d:89},
+{c:"3/22/2026",co:"One way Asphalt",n:"Joe Vigil",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:929,d:8},
+{c:"3/22/2026",co:"Ultimate Asphalt",n:"Brian Sutliff",s1:"Yes",s2:"No",ov:"Yes",cm:"Yes",px:"Yes",sq:"Yes",sf:40992,d:35},
+{c:"3/22/2026",co:"Ultimate Asphalt",n:"Crystal Mason",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:698,d:10},
+{c:"3/22/2026",co:"Ultimate Asphalt",n:"Anitra Jarvis",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1311,d:4},
+{c:"3/22/2026",co:"Ultimate Asphalt",n:"Nangofia Mwene",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:303,d:19},
+{c:"3/22/2026",co:"Michaels Asphalt Paving Company",n:"Shannon Hardy",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1405,d:75},
+{c:"3/23/2026",co:"North Cal Paving",n:"Alejandro Alcocer",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:7372,d:30},
+{c:"3/23/2026",co:"Ultimate Asphalt",n:"David Boychan",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:686,d:15},
+{c:"3/23/2026",co:"North Cal Paving",n:"Christian",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:182,d:0},
+{c:"3/23/2026",co:"North Cal Paving",n:"Stacie Seidner Ulatowska",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1137,d:128},
+{c:"3/23/2026",co:"Ultimate Asphalt",n:"Donna Nash",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:76,d:15},
+{c:"3/23/2026",co:"Ultimate Asphalt",n:"Akwasi Appiah-Boateng",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:585,d:16},
+{c:"3/24/2026",co:"One way Asphalt",n:"Catherine Telles",s1:"Yes",s2:"Yes",ov:"Yes",cm:"Yes",px:"Yes",sq:"Yes",sf:12985,d:5},
+{c:"3/24/2026",co:"North Cal Paving",n:"Willie Hedges",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:12061,d:19},
+{c:"3/24/2026",co:"Paving Pro",n:"Ruben Pena",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:772,d:26},
+{c:"3/24/2026",co:"Ultimate Asphalt",n:"Dudley Holland III",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:7437,d:52},
+{c:"3/24/2026",co:"Ultimate Asphalt",n:"Nathan Robinson",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:4140,d:40},
+{c:"3/24/2026",co:"Ultimate Asphalt",n:"Chip Boster",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1324,d:19},
+{c:"3/24/2026",co:"North Cal Paving",n:"Serry Som",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:11725,d:41},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Kimmy Davis",s1:"Yes",s2:"Yes",ov:"No",cm:"No",px:"Yes",sq:"No",sf:0,d:63},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Myron Brown",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:13500,d:27},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Dien Hoang",s1:"Yes",s2:"Yes",ov:"Yes",cm:"Yes",px:"Yes",sq:"Yes",sf:6008,d:15},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Adolph Cobb Jr.",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:5159,d:19},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Hernandez M Juan",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:5127,d:60},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Heather Shively",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:2668,d:42},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"David Savick",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:2428,d:30},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Randy Nass",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:2229,d:67},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Victor King",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:2151,d:8},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Anthony Patterson",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:2014,d:22},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Travis Smith",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:2005,d:26},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Anthony Pittman",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1638,d:5},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Rodney Finch",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1595,d:18},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Erlin Zamora",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1522,d:57},
+{c:"3/25/2026",co:"Ultimate Asphalt",n:"Kevin Winston",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:2249,d:16},
+{c:"3/25/2026",co:"Ultimate Asphalt",n:"Vedh Khatiwada",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:650,d:15},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Luke Martin Jr",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"Yes",sf:1100,d:95},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Gamael Butler",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"Yes",sf:747,d:57},
+{c:"3/25/2026",co:"One way Asphalt",n:"Alfonso Antillon",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:7532,d:16},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Nino Blacklife",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:0,d:0},
+{c:"3/25/2026",co:"Ultimate Asphalt",n:"Bill Enyart",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1879,d:28},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Rasheem Fulks",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1251,d:66},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Fernando Salcedo",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"Yes",sf:1617,d:92},
+{c:"3/25/2026",co:"Paving Pro",n:"Fidel Rodriguez Jr.",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1043,d:3},
+{c:"3/25/2026",co:"Ultimate Asphalt",n:"Harold Bigony",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:319,d:9},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Stacy Patman",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1209,d:34},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"David Watts",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1196,d:66},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Xavier Cruz",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1188,d:63},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Khanh Vy Nguyen",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1152,d:19},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Beverly Hodo",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1096,d:83},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Kenneth Cooper",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:0,d:30},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Rose Mosley",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1066,d:78},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Tj Williams",s1:"No",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1089,d:33},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Coley James",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:905,d:62},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Morris Miller",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"Yes",sf:1019,d:64},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Clara Greene",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:877,d:18},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Steven Weaver",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:824,d:65},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Ramon Valle",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:0,d:0},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Miguel Cornejo Wario",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:0,d:0},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Ever Balbuena",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:731,d:89},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Torrence Hill",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:623,d:12},
+{c:"3/25/2026",co:"Michaels Asphalt Paving Company",n:"Kimberly Lee",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:422,d:15},
+{c:"3/26/2026",co:"Michaels Asphalt Paving Company",n:"Frank White",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:2010,d:21},
+{c:"3/26/2026",co:"Michaels Asphalt Paving Company",n:"Vincent Hill",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1524,d:68},
+{c:"3/26/2026",co:"Ultimate Asphalt",n:"Chris Hannan",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:469,d:17},
+{c:"3/26/2026",co:"Ultimate Asphalt",n:"Kyauta Askira",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:281,d:17},
+{c:"3/26/2026",co:"Ultimate Asphalt",n:"Mehrak Kamali",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:552,d:13},
+{c:"3/26/2026",co:"Ultimate Asphalt",n:"Othman Jallaq",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:12698,d:32},
+{c:"3/26/2026",co:"North Cal Paving",n:"Eduardo Zuniga",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:0,d:117},
+{c:"3/26/2026",co:"North Cal Paving",n:"Chris Brito",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"Yes",sf:637,d:118},
+{c:"3/26/2026",co:"Michaels Asphalt Paving Company",n:"Eric Willis",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1212,d:67},
+{c:"3/26/2026",co:"Michaels Asphalt Paving Company",n:"Marie Simmons",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:827,d:21},
+{c:"3/26/2026",co:"Michaels Asphalt Paving Company",n:"Don Perkns",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:0,d:0},
+{c:"3/26/2026",co:"Michaels Asphalt Paving Company",n:"Cindy Moran",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:909,d:125},
+{c:"3/26/2026",co:"Ultimate Asphalt",n:"Jb Rivas",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:9173,d:28},
+{c:"3/26/2026",co:"North Cal Paving",n:"Faustino Cortes",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:0,d:0},
+{c:"3/27/2026",co:"Michaels Asphalt Paving Company",n:"Antonio Rosser",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:2216,d:23},
+{c:"3/27/2026",co:"Michaels Asphalt Paving Company",n:"Jason Reed",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1985,d:25},
+{c:"3/27/2026",co:"Ultimate Asphalt",n:"Cynt Mobley",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:473,d:8},
+{c:"3/27/2026",co:"Ultimate Asphalt",n:"Stanley Hawkins",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1128,d:21},
+{c:"3/27/2026",co:"North Cal Paving",n:"Robin Sangha",s1:"Yes",s2:"Yes",ov:"Yes",cm:"Yes",px:"Yes",sq:"Yes",sf:32361,d:100},
+{c:"3/27/2026",co:"Paving Pro",n:"James Farley",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"Yes",sf:0,d:82},
+{c:"3/27/2026",co:"Michaels Asphalt Paving Company",n:"Lilly Leal",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:881,d:19}
+];
+
+// === WEEK 2 DATA (3/28-4/3) ===
+const W2=[
+{c:"3/28/2026",co:"Ultimate Asphalt",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"Yes",sf:8325,d:132},
+{c:"3/28/2026",co:"Ultimate Asphalt",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:225,d:11},
+{c:"3/28/2026",co:"Ultimate Asphalt",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1630,d:58},
+{c:"3/28/2026",co:"One way Asphalt",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:0,d:225},
+{c:"3/28/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1282,d:17},
+{c:"3/28/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1800,d:74},
+{c:"3/28/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:456,d:5},
+{c:"3/28/2026",co:"Paving Pro",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:0,d:0},
+{c:"3/29/2026",co:"Michaels Asphalt Paving Company",s1:"No",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1889,d:64},
+{c:"3/29/2026",co:"Michaels Asphalt Paving Company",s1:"No",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:0,d:5},
+{c:"3/29/2026",co:"Universal Asphalt",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:2400,d:8},
+{c:"3/29/2026",co:"Preaux Roofing",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:0,d:32},
+{c:"3/29/2026",co:"North Cal Paving",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:3995,d:31},
+{c:"3/29/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:6300,d:10},
+{c:"3/29/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:2744,d:90},
+{c:"3/29/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:2710,d:77},
+{c:"3/29/2026",co:"North Cal Paving",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:0,d:389},
+{c:"3/29/2026",co:"North Cal Paving",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:770,d:1148},
+{c:"3/29/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:6231,d:97},
+{c:"3/29/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:4427,d:60},
+{c:"3/29/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:10111,d:62},
+{c:"3/29/2026",co:"Paving Pro",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:675,d:21},
+{c:"3/29/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"No",ov:"Yes",cm:"Yes",px:"Yes",sq:"Yes",sf:19459,d:72},
+{c:"3/29/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:503,d:10},
+{c:"3/29/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:9663,d:73},
+{c:"3/29/2026",co:"Paving Pro",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:0,d:0},
+{c:"3/29/2026",co:"North Cal Paving",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1991,d:41},
+{c:"3/30/2026",co:"Ultimate Asphalt",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:967,d:38},
+{c:"3/30/2026",co:"North Cal Paving",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:375,d:109},
+{c:"3/30/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1896,d:72},
+{c:"3/30/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1902,d:67},
+{c:"3/30/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:3391,d:39},
+{c:"3/30/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1212,d:49},
+{c:"3/30/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1744,d:112},
+{c:"3/30/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:958,d:73},
+{c:"3/30/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1108,d:91},
+{c:"3/30/2026",co:"North Cal Paving",s1:"Yes",s2:"Yes",ov:"Yes",cm:"Yes",px:"Yes",sq:"Yes",sf:229,d:5},
+{c:"3/30/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:878,d:7},
+{c:"3/30/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:5448,d:72},
+{c:"3/30/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1878,d:69},
+{c:"3/30/2026",co:"One way Asphalt",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:7111,d:5},
+{c:"3/30/2026",co:"North Cal Paving",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:3082,d:35},
+{c:"3/30/2026",co:"Preaux Roofing",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:0,d:0},
+{c:"3/31/2026",co:"Michaels Asphalt Paving Company",s1:"No",s2:"No",ov:"No",cm:"No",px:"Yes",sq:"No",sf:624,d:91},
+{c:"3/31/2026",co:"Paving Pro",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:625,d:22},
+{c:"3/31/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:2295,d:82},
+{c:"3/31/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1726,d:78},
+{c:"3/31/2026",co:"North Cal Paving",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:0,d:168},
+{c:"3/31/2026",co:"North Cal Paving",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:900,d:170},
+{c:"3/31/2026",co:"North Cal Paving",s1:"No",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:478,d:115},
+{c:"3/31/2026",co:"Michaels Asphalt Paving Company",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:0,d:205},
+{c:"3/31/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:2171,d:98},
+{c:"3/31/2026",co:"Ultimate Asphalt",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:423,d:15},
+{c:"3/31/2026",co:"Preaux Roofing",s1:"Yes",s2:"No",ov:"Yes",cm:"Yes",px:"Yes",sq:"Yes",sf:0,d:42},
+{c:"3/31/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:2248,d:79},
+{c:"3/31/2026",co:"Paving Pro",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"Yes",sf:34974,d:347},
+{c:"3/31/2026",co:"Michaels Asphalt Paving Company",s1:"No",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1139,d:61},
+{c:"3/31/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1015,d:24},
+{c:"3/31/2026",co:"Ultimate Asphalt",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1626,d:7},
+{c:"3/31/2026",co:"Ultimate Asphalt",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:612,d:80},
+{c:"3/31/2026",co:"Michaels Asphalt Paving Company",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"Yes",sf:1530,d:109},
+{c:"3/31/2026",co:"Metro57 Concrete & Asphalt Paving",s1:"No",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:0,d:23},
+{c:"4/1/2026",co:"Ultimate Asphalt",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:6242,d:22},
+{c:"4/1/2026",co:"One way Asphalt",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:2791,d:23},
+{c:"4/1/2026",co:"Metro57 Concrete & Asphalt Paving",s1:"Yes",s2:"Yes",ov:"Yes",cm:"Yes",px:"Yes",sq:"Yes",sf:10376,d:180},
+{c:"4/1/2026",co:"Metro57 Concrete & Asphalt Paving",s1:"Yes",s2:"Yes",ov:"Yes",cm:"Yes",px:"Yes",sq:"Yes",sf:131400,d:32},
+{c:"4/1/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:10000,d:59},
+{c:"4/1/2026",co:"North Cal Paving",s1:"No",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:0,d:19},
+{c:"4/1/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1291,d:78},
+{c:"4/1/2026",co:"North Cal Paving",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:0,d:0},
+{c:"4/1/2026",co:"Metro57 Concrete & Asphalt Paving",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:520,d:35},
+{c:"4/1/2026",co:"Metro57 Concrete & Asphalt Paving",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:579,d:47},
+{c:"4/1/2026",co:"North Cal Paving",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"Yes",sf:3722,d:39},
+{c:"4/2/2026",co:"Advance Asphalt",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:2277,d:15},
+{c:"4/2/2026",co:"Michaels Asphalt Paving Company",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"Yes",sf:0,d:144},
+{c:"4/2/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:977,d:79},
+{c:"4/2/2026",co:"Michaels Asphalt Paving Company",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:240,d:103},
+{c:"4/2/2026",co:"Preaux Roofing",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:0,d:0},
+{c:"4/2/2026",co:"Advance Asphalt",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:5121,d:84},
+{c:"4/2/2026",co:"Advance Asphalt",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:929,d:58},
+{c:"4/2/2026",co:"Advance Asphalt",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1184,d:29},
+{c:"4/2/2026",co:"Advance Asphalt",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1487,d:38},
+{c:"4/2/2026",co:"Advance Asphalt",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:3419,d:54},
+{c:"4/2/2026",co:"Advance Asphalt",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1535,d:33},
+{c:"4/2/2026",co:"Ultimate Asphalt",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1336,d:18},
+{c:"4/2/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:609,d:75},
+{c:"4/2/2026",co:"One way Asphalt",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:2293,d:27},
+{c:"4/2/2026",co:"Ultimate Asphalt",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:7023,d:29},
+{c:"4/2/2026",co:"Ultimate Asphalt",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:3617,d:52},
+{c:"4/2/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:0,d:74},
+{c:"4/2/2026",co:"Advance Asphalt",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:3000,d:83},
+{c:"4/2/2026",co:"Metro57 Concrete & Asphalt Paving",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:572,d:40},
+{c:"4/2/2026",co:"Metro57 Concrete & Asphalt Paving",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:0,d:14},
+{c:"4/2/2026",co:"Metro57 Concrete & Asphalt Paving",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:589,d:34},
+{c:"4/2/2026",co:"Metro57 Concrete & Asphalt Paving",s1:"No",s2:"Yes",ov:"No",cm:"No",px:"No",sq:"No",sf:81459,d:17},
+{c:"4/2/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1224,d:72},
+{c:"4/2/2026",co:"North Cal Paving",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:18104,d:77},
+{c:"4/3/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:3153,d:66},
+{c:"4/3/2026",co:"Advance Asphalt",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:0,d:0},
+{c:"4/3/2026",co:"Advance Asphalt",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:3677,d:79},
+{c:"4/3/2026",co:"Advance Asphalt",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1636,d:37},
+{c:"4/3/2026",co:"Michaels Asphalt Paving Company",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:0,d:200},
+{c:"4/3/2026",co:"Metro57 Concrete & Asphalt Paving",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:0,d:0},
+{c:"4/3/2026",co:"Metro57 Concrete & Asphalt Paving",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:1010,d:0},
+{c:"4/3/2026",co:"Advance Asphalt",s1:"No",s2:"No",ov:"No",cm:"No",px:"No",sq:"No",sf:0,d:0},
+{c:"4/3/2026",co:"Preaux Roofing",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:0,d:83},
+{c:"4/3/2026",co:"Ultimate Asphalt",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:2769,d:37},
+{c:"4/3/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:2470,d:74},
+{c:"4/3/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"No",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:1665,d:93},
+{c:"4/3/2026",co:"Advance Asphalt",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:708,d:20},
+{c:"4/3/2026",co:"Michaels Asphalt Paving Company",s1:"Yes",s2:"Yes",ov:"Yes",cm:"No",px:"Yes",sq:"Yes",sf:994,d:75}
+];
+
+// === HELPERS ===
+const Y=v=>v==='Yes', P=(n,d)=>d?Math.round(n/d*100):0, F=n=>n.toLocaleString();
+const ALLCOS=[...new Set([...W1,...W2].map(r=>r.co))].sort();
+let act=new Set(ALLCOS), curWk='both', curView='all';
+const short=c=>c.replace(' Concrete & Asphalt Paving','').replace(' Asphalt Paving Company','');
+
+function stats(data){
+  const d=data.filter(r=>act.has(r.co));
+  const t=d.length,s1=d.filter(r=>Y(r.s1)).length,s2=d.filter(r=>Y(r.s2)).length,
+  q=d.filter(r=>Y(r.ov)).length,cm=d.filter(r=>Y(r.cm)).length,
+  px=d.filter(r=>Y(r.px)).length,sqQ=d.filter(r=>Y(r.sq)).length,
+  s1y_s2y=d.filter(r=>Y(r.s1)&&Y(r.s2)).length,s1y_s2n=d.filter(r=>Y(r.s1)&&!Y(r.s2)).length,
+  ql=d.filter(r=>Y(r.ov)&&r.sf>0),aS=ql.length?Math.round(ql.reduce((a,r)=>a+r.sf,0)/ql.length):0,
+  qd=d.filter(r=>Y(r.ov)&&r.d>0),aD=qd.length?Math.round(qd.reduce((a,r)=>a+r.d,0)/qd.length):0,
+  tSf=d.filter(r=>Y(r.ov)).reduce((a,r)=>a+r.sf,0);
+  return{t,s1,s2,q,cm,px,sqQ,s1y_s2y,s1y_s2n,aS,aD,tSf,s1r:P(s1,t),s2r:P(s2,t),qr:P(q,t),s2ofS1:s1?P(s2,s1):0};
+}
+function coSt(data){
+  const s={};data.filter(r=>act.has(r.co)).forEach(r=>{
+  if(!s[r.co])s[r.co]={t:0,q:0,s1:0,s2:0,cm:0,s1y_s2y:0,s1y_s2n:0,sfS:0,sfN:0,dS:0,dN:0};
+  const x=s[r.co];x.t++;if(Y(r.ov))x.q++;if(Y(r.s1))x.s1++;if(Y(r.s2))x.s2++;if(Y(r.cm))x.cm++;
+  if(Y(r.s1)&&Y(r.s2))x.s1y_s2y++;if(Y(r.s1)&&!Y(r.s2))x.s1y_s2n++;
+  if(Y(r.ov)&&r.sf>0){x.sfS+=r.sf;x.sfN++;}if(Y(r.ov)&&r.d>0){x.dS+=r.d;x.dN++;}});return s;}
+
+function delta(v2,v1,suffix=''){
+  if(v1===0&&v2===0)return'<span class="badge flat">&mdash;</span>';
+  const d=v2-v1;const cls=d>0?'up':d<0?'down':'flat';
+  return`<span class="badge ${cls}">${d>0?'+':''}${d}${suffix}</span>`;}
+function deltaKPI(v2,v1,higher_is_better=true){
+  const d=v2-v1;if(d===0)return{cls:'flat',txt:'—'};
+  const good=(higher_is_better&&d>0)||(!higher_is_better&&d<0);
+  return{cls:good?'up':'down',txt:(d>0?'+':'')+d};}
+
+// === UNIFIED CHIP TOGGLES (Recipe 10) ===
+function bldTog(){const b=document.getElementById('tbar');b.innerHTML='';
+const a=document.createElement('div');a.className='tb'+(act.size===ALLCOS.length?' ac':'');
+a.textContent='ALL';a.onclick=()=>{act.size===ALLCOS.length?act.clear():act=new Set(ALLCOS);bldTog();R();};b.appendChild(a);
+ALLCOS.forEach(c=>{const t=document.createElement('div');t.className='tb'+(act.has(c)?' ac':'');
+t.textContent=short(c);t.onclick=()=>{act.has(c)?act.delete(c):act.add(c);bldTog();R();};b.appendChild(t);});}
+
+// === BOTH WEEKS VIEW ===
+function rBoth(){
+const a=stats(W1),b=stats(W2);
+const isMedia=curView==='media',isCC=curView==='cc';
+
+// KPI cards (Recipe 9)
+const metrics=[];
+if(!isCC){
+metrics.push({l:'Total Leads',v1:a.t,v2:b.t},{l:'Qual Rate',v1:a.qr,v2:b.qr,s:'%'},{l:'S-1 Rate',v1:a.s1r,v2:b.s1r,s:'%'},
+{l:'Avg SqFt',v1:a.aS,v2:b.aS,fmt:true},{l:'Avg Distance',v1:a.aD,v2:b.aD,s:' mi'},{l:'Proximity Qual',v1:P(a.px,a.t||1),v2:P(b.px,b.t||1),s:'%'});}
+if(!isMedia){
+metrics.push({l:'S-2 Rate',v1:a.s2r,v2:b.s2r,s:'%'},{l:'S2 of S1',v1:a.s2ofS1,v2:b.s2ofS1,s:'%'},
+{l:'S1→S2 Lost',v1:a.s1y_s2n,v2:b.s1y_s2n,hib:false},{l:'Raw S2 Transfers',v1:a.s2,v2:b.s2});}
+if(curView==='all')metrics.push({l:'Commercial',v1:a.cm,v2:b.cm},{l:'Total SqFt',v1:a.tSf,v2:b.tSf,fmt:true});
+
+document.getElementById('bothKPI').innerHTML=metrics.map(m=>{
+const dk=deltaKPI(m.v2,m.v1,m.hib!==false);const s=m.s||'';
+return`<div class="kpi"><div class="delta ${dk.cls}">${dk.txt}${!m.fmt?s:''}</div><div class="l">${m.l}</div><div class="v">${m.fmt?F(m.v2):m.v2}${!m.fmt?s:''}</div><div class="prev">WK1: ${m.fmt?F(m.v1):m.v1}${!m.fmt?s:''}</div></div>`;}).join('');
+
+// Account cards
+const cs1=coSt(W1),cs2=coSt(W2);
+const allCos=[...new Set([...Object.keys(cs1),...Object.keys(cs2)])].sort((a,b)=>(cs2[b]?.t||0)-(cs2[a]?.t||0));
+const rows=[];
+if(!isCC)rows.push({m:'Leads',f:(s)=>s.t},{m:'Qual Rate',f:(s)=>P(s.q,s.t),s:'%'},{m:'S-1 Rate',f:(s)=>P(s.s1,s.t),s:'%'},{m:'Avg SqFt',f:(s)=>s.sfN?Math.round(s.sfS/s.sfN):0,fmt:true});
+if(!isMedia)rows.push({m:'S-2 Rate',f:(s)=>P(s.s2,s.t),s:'%'},{m:'S2 of S1',f:(s)=>s.s1?P(s.s1y_s2y,s.s1):0,s:'%'},{m:'S1→S2 Lost',f:(s)=>s.s1y_s2n,hib:false});
+
+document.getElementById('bothAccts').innerHTML=allCos.map(c=>{
+const v1=cs1[c]||{t:0,q:0,s1:0,s2:0,cm:0,s1y_s2y:0,s1y_s2n:0,sfS:0,sfN:0,dS:0,dN:0};
+const v2=cs2[c]||{t:0,q:0,s1:0,s2:0,cm:0,s1y_s2y:0,s1y_s2n:0,sfS:0,sfN:0,dS:0,dN:0};
+return`<div class="acard"><h3>${short(c)}</h3>
+<div class="legend"><span class="metric-spacer"></span><div class="vals"><span class="w1">Wk1</span><span class="w2">Wk2</span><span class="chg">Chg</span></div></div>
+${rows.map(r=>{const a=r.f(v1),b2=r.f(v2);const s=r.s||'';
+return`<div class="row"><span class="metric">${r.m}</span><div class="vals"><span class="w1">${r.fmt?F(a):a}${s}</span><span class="w2">${r.fmt?F(b2):b2}${s}</span><span class="chg">${delta(b2,a,r.fmt?'':s)}</span></div></div>`;}).join('')}
+</div>`;}).join('');
+
+// Comparison bars (Chart Rules: current=#52E0AE, previous=#6D7891)
+function cmpBarMarkup(metric,suffix,max,optClass=''){
+const arr=allCos.filter(c=>(cs1[c]||cs2[c]));
+if(!arr.length)return '<div class="tbpn-empty">No qualifying data for selected period</div>';
+return `<div class="${optClass}">`+arr.map(c=>{
+const v1=cs1[c]?metric(cs1[c]):0,v2=cs2[c]?metric(cs2[c]):0;const mx=max||Math.max(v1,v2,1);
+return`<div class="cmp-row"><div class="cmp-label">${short(c)}</div><div class="cmp-bars">
+<div class="cmp-bar-row"><div class="cmp-wk">Wk1</div><div class="cmp-track"><div class="cmp-fill previous" style="width:${Math.max(P(v1,mx),2)}%">${v1}${suffix}</div></div></div>
+<div class="cmp-bar-row"><div class="cmp-wk">Wk2</div><div class="cmp-track"><div class="cmp-fill current" style="width:${Math.max(P(v2,mx),2)}%">${v2}${suffix}</div></div></div>
+</div></div>`;}).join('')+`</div>`;}
+function cmpBar(id,metric,suffix,max,optClass=''){
+document.getElementById(id).innerHTML=cmpBarMarkup(metric,suffix,max,optClass);}
+
+if(!isCC){
+cmpBar('cmpS1',s=>P(s.s1,s.t),'%',100);
+cmpBar('cmpQual',s=>P(s.q,s.t),'%',100);
+cmpBar('cmpSqft',s=>s.sfN?Math.round(s.sfS/s.sfN):0,'');
+cmpBar('cmpDist',s=>s.dN?Math.round(s.dS/s.dN):0,' mi');
+}else{
+cmpBar('cmpS1',s=>P(s.s1,s.t),'%',100);
+cmpBar('cmpQual',s=>P(s.q,s.t),'%',100);
+cmpBar('cmpSqft',s=>s.sfN?Math.round(s.sfS/s.sfN):0,'');
+cmpBar('cmpDist',s=>s.dN?Math.round(s.dS/s.dN):0,' mi');
+}
+cmpBar('cmpS2',s=>P(s.s2,s.t),'%',100);
+cmpBar('cmpS2ofS1',s=>s.s1?P(s.s1y_s2y,s.s1):0,'%',100);
+
+// Table (Addendum 10: right-aligned numerics)
+const th=`<tr><th>Account</th><th colspan="3">Leads</th><th colspan="3">${isCC?'S-2 Rate':'Qual Rate'}</th><th colspan="3">S-1 Rate</th><th colspan="3">S2 of S1</th><th colspan="3">S1→S2 Lost</th></tr>
+<tr><th></th><th>Wk1</th><th>Wk2</th><th>Chg</th><th>Wk1</th><th>Wk2</th><th>Chg</th><th>Wk1</th><th>Wk2</th><th>Chg</th><th>Wk1</th><th>Wk2</th><th>Chg</th><th>Wk1</th><th>Wk2</th><th>Chg</th></tr>`;
+const tb=allCos.map(c=>{
+const v1=cs1[c]||{t:0,q:0,s1:0,s2:0,s1y_s2y:0,s1y_s2n:0};const v2=cs2[c]||{t:0,q:0,s1:0,s2:0,s1y_s2y:0,s1y_s2n:0};
+const m2=isCC?[P(v1.s2,v1.t),P(v2.s2,v2.t)]:[P(v1.q,v1.t),P(v2.q,v2.t)];
+return`<tr><td>${short(c)}</td>
+<td>${v1.t}</td><td>${v2.t}</td><td>${delta(v2.t,v1.t)}</td>
+<td>${m2[0]}%</td><td>${m2[1]}%</td><td>${delta(m2[1],m2[0],'%')}</td>
+<td>${P(v1.s1,v1.t)}%</td><td>${P(v2.s1,v2.t)}%</td><td>${delta(P(v2.s1,v2.t),P(v1.s1,v1.t),'%')}</td>
+<td>${v1.s1?P(v1.s1y_s2y,v1.s1):0}%</td><td>${v2.s1?P(v2.s1y_s2y,v2.s1):0}%</td><td>${delta(v2.s1?P(v2.s1y_s2y,v2.s1):0,v1.s1?P(v1.s1y_s2y,v1.s1):0,'%')}</td>
+<td>${v1.s1y_s2n}</td><td>${v2.s1y_s2n}</td><td>${delta(v2.s1y_s2n,v1.s1y_s2n)}</td></tr>`;}).join('');
+document.getElementById('wowTable').innerHTML=`<thead>${th}</thead><tbody>${tb}</tbody>`;}
+
+// === SINGLE WEEK ===
+function rSingle(){
+const data=curWk==='w1'?W1:W2;const s=stats(data);const cs=coSt(data);
+const isCC=curView==='cc';
+const arr=Object.entries(cs).sort((a,b)=>b[1].t-a[1].t);
+
+const metrics=[];
+if(!isCC)metrics.push({l:'Total Leads',v:s.t},{l:'Qual Rate',v:s.qr+'%'},{l:'S-1 Rate',v:s.s1r+'%'},{l:'Avg SqFt',v:F(s.aS)});
+if(curView!=='media')metrics.push({l:'S-2 Rate',v:s.s2r+'%'},{l:'S2 of S1',v:s.s2ofS1+'%'},{l:'S1→S2 Lost',v:s.s1y_s2n});
+document.getElementById('singleKPI').innerHTML=metrics.map(m=>`<div class="kpi"><div class="l">${m.l}</div><div class="v">${m.v}</div></div>`).join('');
+
+const empty='<div class="tbpn-empty">No qualifying data for selected period</div>';
+document.getElementById('sAcct').innerHTML=arr.length?arr.map(([c,v])=>`<div class="cmp-row"><div class="cmp-label">${short(c)}</div><div class="cmp-bars"><div class="cmp-bar-row"><div class="cmp-wk"></div><div class="cmp-track"><div class="cmp-fill current" style="width:${Math.max(P(v.t,Math.max(...arr.map(a=>a[1].t),1)),3)}%">${v.t}</div></div></div></div></div>`).join(''):empty;
+document.getElementById('sQual').innerHTML=arr.length?arr.map(([c,v])=>`<div class="cmp-row"><div class="cmp-label">${short(c)}</div><div class="cmp-bars"><div class="cmp-bar-row"><div class="cmp-wk"></div><div class="cmp-track"><div class="cmp-fill current" style="width:${Math.max(P(v.q,v.t),3)}%">${P(v.q,v.t)}%</div></div></div></div></div>`).join(''):empty;
+document.getElementById('sS1').innerHTML=arr.length?arr.map(([c,v])=>`<div class="cmp-row"><div class="cmp-label">${short(c)}</div><div class="cmp-bars"><div class="cmp-bar-row"><div class="cmp-wk"></div><div class="cmp-track"><div class="cmp-fill current" style="width:${Math.max(P(v.s1,v.t),3)}%">${P(v.s1,v.t)}%</div></div></div></div></div>`).join(''):empty;
+const s2arr=arr.filter(([c,v])=>v.s1>0);
+document.getElementById('sS2ofS1').innerHTML=s2arr.length?s2arr.map(([c,v])=>`<div class="cmp-row"><div class="cmp-label">${short(c)}</div><div class="cmp-bars"><div class="cmp-bar-row"><div class="cmp-wk"></div><div class="cmp-track"><div class="cmp-fill current" style="width:${Math.max(P(v.s1y_s2y,v.s1),3)}%">${P(v.s1y_s2y,v.s1)}%</div></div></div></div></div>`).join(''):empty;}
+
+// === RENDER ===
+function R(){
+document.getElementById('p-both').classList.toggle('ac',curWk==='both');
+document.getElementById('p-single').classList.toggle('ac',curWk!=='both');
+if(curWk==='both')rBoth();else rSingle();}
+
+// === EVENTS ===
+document.querySelectorAll('.wk-btn').forEach(b=>b.addEventListener('click',()=>{
+document.querySelectorAll('.wk-btn').forEach(x=>x.classList.remove('ac'));b.classList.add('ac');curWk=b.dataset.wk;R();}));
+document.querySelectorAll('.view-btn').forEach(b=>b.addEventListener('click',()=>{
+document.querySelectorAll('.view-btn').forEach(x=>x.classList.remove('ac'));b.classList.add('ac');curView=b.dataset.view;R();}));
+
+bldTog();R();
+</script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "brand": {
+    "name": "TBPN",
+    "version": "2.1.0",
+    "description": "Finalized TBPN dashboard tokens derived from the working dashboard implementation, including the Lifted Signal library header rail."
+  },
+  "reference": {
+    "workingDashboard": {
+      "value": "/Users/blakeperry/Documents/New Project/week-over-week-dashboard-working.html"
+    },
+    "assetsDirectory": {
+      "value": "/Users/blakeperry/Documents/New Project/assets"
+    }
+  },
+  "color": {
+    "bg": {
+      "base": { "value": "#020403" },
+      "studio": { "value": "#050808" },
+      "panel": { "value": "rgba(3,10,8,0.80)" }
+    },
+    "green": {
+      "primary": { "value": "#18D39C" },
+      "bright": { "value": "#6AFFD2" },
+      "deep": { "value": "#0D7859" },
+      "seriesCurrentTop": { "value": "#A8F4D9" },
+      "seriesCurrentBottom": { "value": "#21B57F" }
+    },
+    "chrome": {
+      "light": { "value": "#EAF0F7" },
+      "mid": { "value": "#98A9C8" },
+      "dark": { "value": "#485668" },
+      "headerTitleTop": { "value": "#EEF3FA" },
+      "headerTitleBottom": { "value": "#9AA7BB" }
+    },
+    "steel": {
+      "previousTop": { "value": "#B1BBCF" },
+      "previousBottom": { "value": "#515C70" }
+    },
+    "text": {
+      "primary": { "value": "#F3F6FB" },
+      "muted": { "value": "#9FB1CA" },
+      "kpiLabel": { "value": "#C1CCDA" },
+      "kpiMeta": { "value": "#A7B4C6" },
+      "chartCompany": { "value": "#E2E9F2" },
+      "accountCardTitle": { "value": "#F2F6FB" }
+    },
+    "state": {
+      "positive": { "value": "#52E0AE" },
+      "negative": { "value": "#C85A58" },
+      "activeTextOnGreen": { "value": "#07110D" }
+    },
+    "line": {
+      "panel": { "value": "rgba(131,255,210,0.17)" },
+      "chrome": { "value": "rgba(170,186,223,0.22)" },
+      "subtle": { "value": "rgba(159,177,202,0.08)" }
+    }
+  },
+  "gradient": {
+    "chrome": {
+      "value": "linear-gradient(180deg, #F7FBFF 0%, #B7C5DD 48%, #4B5C73 100%)"
+    },
+    "green": {
+      "value": "linear-gradient(180deg, #2DE7A9 0%, #0F8C63 100%)"
+    },
+    "panel": {
+      "value": "linear-gradient(180deg, rgba(6,12,10,0.92), rgba(3,7,6,0.96))"
+    },
+    "headerRail": {
+      "value": "radial-gradient(120% 140% at 50% 100%, rgba(81,255,208,0.20), rgba(81,255,208,0) 42%), radial-gradient(84% 90% at 50% 0%, rgba(70,255,196,0.14), rgba(70,255,196,0) 44%), linear-gradient(180deg, rgba(18,50,40,0.98), rgba(11,27,22,0.985) 52%, rgba(4,9,7,0.99))"
+    },
+    "headerTitle": {
+      "value": "linear-gradient(180deg, #EEF3FA 0%, #CBD5E2 46%, #9AA7BB 100%)"
+    },
+    "scanlineOverlay": {
+      "value": "linear-gradient(to bottom, #005947 0px, #00AD73 1px, #59E6BF 2px, #00AD73 3px, #005947 4px)"
+    },
+    "atmosphere": {
+      "value": "linear-gradient(to top, #FFFFFF 0%, #59E6BF 4%, #00AD99 15%, #00241C 34%, #000000 68%)"
+    },
+    "seriesCurrent": {
+      "value": "repeating-linear-gradient(180deg, rgba(255,255,255,0.10) 0 1px, rgba(255,255,255,0) 1px 3px), linear-gradient(180deg, #A8F4D9 0%, #59E0AE 54%, #21B57F 100%)"
+    },
+    "seriesPrevious": {
+      "value": "repeating-linear-gradient(180deg, rgba(255,255,255,0.10) 0 1px, rgba(255,255,255,0) 1px 3px), linear-gradient(180deg, #B1BBCF 0%, #7A859B 56%, #515C70 100%)"
+    },
+    "activeToggle": {
+      "value": "linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0) 28%), linear-gradient(180deg, #41E4AF 0%, #24C793 56%, #139D6E 100%)"
+    },
+    "activeChip": {
+      "value": "linear-gradient(180deg, rgba(45,231,169,0.28), rgba(15,140,99,0.28))"
+    }
+  },
+  "shadow": {
+    "header": {
+      "value": "inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(24,211,156,0.08), 0 8px 24px rgba(0,0,0,0.24)"
+    },
+    "panel": {
+      "value": "inset 0 1px 0 rgba(255,255,255,0.05), 0 0 36px rgba(10,255,180,0.18)"
+    },
+    "accountTitle": {
+      "value": "0 1px 0 rgba(0,0,0,0.9), 0 0 10px rgba(255,255,255,0.04)"
+    }
+  },
+  "font": {
+    "display": {
+      "primary": { "value": "Michroma, sans-serif" }
+    },
+    "support": {
+      "primary": { "value": "\"Universal Sans\", Rajdhani, sans-serif" }
+    },
+    "ui": {
+      "primary": { "value": "Rajdhani, sans-serif" }
+    },
+    "broadcast": {
+      "primary": { "value": "\"Microgramma D Extended Bold\", \"Microgramma Extd D\", Microgramma, \"Eurostile Extended\", Eurostile, Michroma, sans-serif" }
+    }
+  },
+  "spacing": {
+    "pageDesktop": { "value": "20px" },
+    "pageTablet": { "value": "16px" },
+    "pageMobile": { "value": "12px" },
+    "sectionGap": { "value": "20px" },
+    "subGap": { "value": "12px" },
+    "cardGap": { "value": "8px" },
+    "cardPadding": { "value": "12px" }
+  },
+  "dashboard": {
+    "header": {
+      "titleSize": { "value": "16px" },
+      "titleTracking": { "value": "0.1em" },
+      "sticky": { "value": true }
+    },
+    "tab": {
+      "height": { "value": "34px" },
+      "paddingX": { "value": "14px" },
+      "textSize": { "value": "10px" },
+      "tracking": { "value": "0.055em" }
+    },
+    "chip": {
+      "height": { "value": "28px" },
+      "paddingX": { "value": "12px" },
+      "textSize": { "value": "11px" },
+      "radius": { "value": "4px" }
+    },
+    "kpi": {
+      "baseMinHeight": { "value": "82px" },
+      "firstRowMinHeight": { "value": "96px" },
+      "labelSize": { "value": "12px" },
+      "valueSize": { "value": "clamp(2.15rem, 3.15vw, 2.8rem)" },
+      "metaSize": { "value": "11px" },
+      "deltaSize": { "value": "12px" }
+    },
+    "accountCard": {
+      "titleSize": { "value": "14px" },
+      "legendSize": { "value": "9px" },
+      "rowSize": { "value": "13px" },
+      "changeSize": { "value": "11px" }
+    },
+    "chart": {
+      "titleSize": { "value": "14px" },
+      "companySize": { "value": "13px" },
+      "wkSize": { "value": "8px" },
+      "barValueSize": { "value": "11px" },
+      "barHeight": { "value": "20px" }
+    },
+    "table": {
+      "bodySize": { "value": "13px" },
+      "groupHeaderSize": { "value": "10px" },
+      "subHeaderSize": { "value": "9px" },
+      "rowPaddingY": { "value": "11px" }
+    }
+  },
+  "animation": {
+    "easing": { "value": "cubic-bezier(0.22, 0.68, 0.35, 1.0)" },
+    "speed": {
+      "fast": { "value": "200ms" },
+      "default": { "value": "300ms" },
+      "slow": { "value": "350ms" },
+      "dramatic": { "value": "350ms" },
+      "heartbeat": { "value": "600ms" }
+    },
+    "stagger": {
+      "item": { "value": "50ms" },
+      "bar": { "value": "175ms" }
+    },
+    "classes": {
+      "shadowDrop": { "value": ".tbpn-shadow-drop", "description": "Page load entrance — heavy landing with overshoot" },
+      "scaleFade": { "value": ".tbpn-scale-fade", "description": "Tab/panel switch — subtle 98% to 100% scale with fade" },
+      "flipIn": { "value": ".tbpn-flip-in", "description": "Major view change only — dramatic 3D flip entrance" },
+      "pulseActivate": { "value": ".tbpn-pulse-activate", "description": "Toggle active state — green glow flash" },
+      "hoverLift": { "value": ".tbpn-hover-lift", "description": "Interactive hover — 2px lift with shadow expansion" },
+      "barGrow": { "value": ".tbpn-bar-grow-item", "description": "Chart bar fill from zero with per-bar stagger" },
+      "chipPop": { "value": ".tbpn-chip-pop", "description": "Chip selection — quick 6% scale pop" },
+      "stagger": { "value": ".tbpn-stagger", "description": "Cascading entrance with --i delay variable" },
+      "heartbeat": { "value": ".tbpn-heartbeat", "description": "Critical KPI alert — double-pump scale, never loop" },
+      "shadowPress": { "value": ".tbpn-shadow-press", "description": "Button click — inset shadow with 1px depress" }
+    }
+  }
+}
