@@ -66,6 +66,19 @@ Use these assets and this directory as the reference library:
 - [`tbpn-logo-circle.png`](/Users/blakeperry/Documents/New%20Project/assets/tbpn-logo-circle.png)
 - [`logo-world.png`](/Users/blakeperry/Documents/New%20Project/assets/logo-world.png)
 
+## Font Installation Requirement
+
+For local applications, local prototypes, native apps, Figma-adjacent exports, or any build that depends on system-installed fonts, you must install the approved fonts on the machine first.
+
+Do not assume GitHub or a cloned repo installs fonts for you.
+
+Important:
+
+- the repo documents the font system, but it does not install desktop fonts automatically
+- local app work should verify that `Michroma`, `Universal Sans`, `Rajdhani`, and `Microgramma D Extended Bold` are actually available on the machine
+- if the exact font is unavailable in a web-only context, preserve the role with the documented fallback stack
+- if the task is a true local application or local design environment, install the fonts before judging the UI
+
 ## Final System In One Screen
 
 The system is:
@@ -92,8 +105,10 @@ The system is not:
 - Start from near-black.
 - Keep the background layered with atmosphere and scanline treatment.
 - Start with `Base Scanline` when you need the safest default surface. Move to louder approved variants only when the product context truly calls for them.
+- For workflow-heavy screens, choose the archetype first: `Review Cockpit` or `Analysis Table`.
 - Use chrome or chrome-adjacent text for structural labels and titles.
 - Keep the type system to four voices only: `Michroma`, `Universal Sans`, `Rajdhani`, and the broadcast headline stack headed by `Microgramma D Extended Bold`.
+- Do not let dense workflow controls fall into tiny unreadable chrome text. If the control layer gets tight, move that layer to `Rajdhani` and brighten it before shrinking `Michroma` further.
 - Use green as the primary active and current-period color.
 - Keep active green controls using dark text, not white text.
 - Keep company/account chips in one unified color family.
@@ -127,6 +142,16 @@ Default behavior:
 - Active state is a denser green gradient.
 - Active text is dark.
 - Active state must pop clearly without needing excessive glow.
+- For workflow-heavy screens, keep the focused review mode on the left and the denser analysis mode on the right.
+- If the toggle copy becomes compact, repeated, or fragile, move it to `Rajdhani` instead of forcing tiny `Michroma`.
+
+### Workflow Modes
+
+- `Review Cockpit` is the focused, progression-driven mode for approval work.
+- `Analysis Table` is the denser mode for filters, grouped tables, and cross-cut scanning.
+- Review Cockpit should be the default entry mode for review-heavy tools unless the product explicitly says otherwise.
+- Review Cockpit hides dense analysis clutter by default.
+- Analysis Table can keep more filter depth, but it still must preserve readability.
 
 ### Company Chips
 
@@ -189,21 +214,29 @@ Default behavior:
 When building a new product in this system, use this order:
 
 1. Build the background and atmosphere layers.
-2. Build the sticky header rail.
-3. Build the top toggles.
-4. Build the company chips.
-5. Build KPI cards.
-6. Build chart cards.
-7. Build account/detail cards if needed.
-8. Build the grouped comparison table.
-9. Add selective animations to key moments using approved classes.
-10. Tune readability before adding more visual effect.
+2. Choose the product archetype: `Review Cockpit` or `Analysis Table`.
+3. Build the sticky header rail.
+4. Build the top toggles.
+5. Build the company chips.
+6. Build KPI cards.
+7. Build chart cards.
+8. Build account/detail cards if needed.
+9. Build the grouped comparison table.
+10. Add selective animations to key moments using approved classes.
+11. Tune readability before adding more visual effect.
 
 When choosing a background or shell treatment, use this order:
 
 1. decide what kind of surface this is
 2. choose the safest approved family for that surface
 3. only then decide how much lift, glow, or texture the context can support
+
+When choosing a workflow pattern, use this order:
+
+1. is this a focused review queue or cockpit
+2. is this a denser analysis table
+3. how much of the dense filter layer actually belongs in the default view
+4. whether small controls should stay in `Michroma` or move to `Rajdhani` for readability
 
 If you need to lift a reusable pattern quickly, copy from:
 
@@ -238,7 +271,7 @@ Do not solve readability problems with blur.
 ## Default Prompt For A New Agent
 
 ```text
-Build this product in the exact TBPN dashboard system defined in /docs/BRAND_BIBLE.md, /docs/DASHBOARD_ADDENDUM.md, /docs/TBPN_IMPLEMENTATION_RECIPES.md, and /docs/brand-tokens.json. Use /week-over-week-dashboard-working.html as the implementation benchmark, /tbpn-component-library.html as the reusable component reference, and /assets as the visual resource library. Preserve the established header rail, active toggle treatment, chip system, KPI hierarchy, account-card title treatment, comparison bar treatment, grouped table styling, and surface-family logic. Use only the approved animation classes from the Animations tab in /tbpn-component-library.html. After building, run the self-check in /docs/VALIDATION_CHECKLIST.md. Do not reinterpret the brand from scratch and do not drift into generic SaaS or vendor-default dashboard styling.
+Build this product in the exact TBPN dashboard system defined in /docs/BRAND_BIBLE.md, /docs/DASHBOARD_ADDENDUM.md, /docs/TBPN_IMPLEMENTATION_RECIPES.md, and /docs/brand-tokens.json. Use /week-over-week-dashboard-working.html as the implementation benchmark, /tbpn-component-library.html as the reusable component reference, and /assets as the visual resource library. If the screen is workflow-heavy, decide first whether it is a focused Review Cockpit or a denser Analysis Table. Preserve the established header rail, active toggle treatment, chip system, KPI hierarchy, account-card title treatment, comparison bar treatment, grouped table styling, and surface-family logic. Use Rajdhani for dense compact controls when Michroma would become too small or fragile. Use only the approved animation classes from the Animations tab in /tbpn-component-library.html. After building, run the self-check in /docs/VALIDATION_CHECKLIST.md. Do not reinterpret the brand from scratch and do not drift into generic SaaS or vendor-default dashboard styling.
 ```
 
 For copyable approved component markup, also inspect:

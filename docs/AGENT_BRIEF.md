@@ -21,6 +21,14 @@ Reference assets:
 
 - [`assets`](/Users/blakeperry/Documents/New%20Project/assets)
 
+## Font Install Rule
+
+For any local application, local prototype, native wrapper, or local design/export environment, install the approved fonts on the machine before evaluating the UI.
+
+GitHub and a cloned repo do not install fonts automatically.
+
+Use the documented fallback stacks only when the context is genuinely web-only. If the task is local app work, verify that `Michroma`, `Universal Sans`, `Rajdhani`, and `Microgramma D Extended Bold` are installed first.
+
 ## What To Build
 
 Build TBPN interfaces so they feel like:
@@ -55,9 +63,11 @@ Inside `Gradients & Textures`, use the section as a surface chooser:
 ## Non-Negotiables
 
 - Start from near-black, never white.
+- Choose the workflow archetype first when the screen is operational: `Review Cockpit` or `Analysis Table`.
 - Use green as the primary signal color.
 - Use chrome or chrome-adjacent text treatment for major labels and titles.
 - Use four font roles only: `Michroma`, `Universal Sans`, `Rajdhani`, and the broadcast headline stack headed by `Microgramma D Extended Bold`.
+- If a compact control becomes too small or weak in `Michroma`, switch that layer to `Rajdhani` instead of leaving it fragile.
 - Use scanline and atmosphere layers behind the UI, not pasted on top of it.
 - Keep panels hard-edged, aligned, and grid-driven.
 - Keep active states unmistakable.
@@ -115,15 +125,16 @@ See the Animations tab in the component library for live demos and copyable code
 ## Default Build Order
 
 1. Add background layers.
-2. Build sticky title rail.
-3. Build top toggles.
-4. Build account chips.
-5. Build KPI cards.
-6. Build charts.
-7. Build account detail cards.
-8. Build table.
-9. Add selective animations to key moments.
-10. Tune readability before adding more effects.
+2. Choose the workflow archetype: `Review Cockpit` or `Analysis Table`.
+3. Build sticky title rail.
+4. Build top toggles.
+5. Build account chips.
+6. Build KPI cards.
+7. Build charts.
+8. Build account detail cards.
+9. Build table.
+10. Add selective animations to key moments.
+11. Tune readability before adding more effects.
 
 When choosing a surface family:
 
@@ -132,6 +143,13 @@ When choosing a surface family:
 3. hero/editorial/title-card moment: `Adaptive Scanline`, `Heavy Horizontal`, `Dot Grid`, or `Chrome`
 4. calm/open/supportive moment: `Soft Signal` or `Quiet Utility`
 5. workspace header/sidebar shell: one of the five workspace-shell variants at the bottom of `Gradients & Textures`
+
+When choosing a workflow pattern:
+
+1. focused review queue or cockpit
+2. denser analysis table
+3. how much filter clutter belongs in the default mode
+4. whether compact controls should cut over from `Michroma` to `Rajdhani`
 
 If you are building from reusable parts rather than from full-page dashboard composition, use the component library before inventing new component structure.
 
@@ -148,7 +166,7 @@ If you are building from reusable parts rather than from full-page dashboard com
 ## Prompt Snippet
 
 ```text
-Build this product in the exact TBPN dashboard system defined in /docs/BRAND_BIBLE.md, /docs/DASHBOARD_ADDENDUM.md, /docs/TBPN_IMPLEMENTATION_RECIPES.md, and /docs/brand-tokens.json. Use /week-over-week-dashboard-working.html as the implementation benchmark, /tbpn-component-library.html as the reusable component reference, and /assets as the visual resource library. Preserve the established header rail, active toggle treatment, chip system, KPI hierarchy, account-card title treatment, comparison bar treatment, grouped table styling, and surface-family logic. Use only the approved animation classes from the Animations tab in /tbpn-component-library.html. After building, run the self-check in /docs/VALIDATION_CHECKLIST.md. Do not reinterpret the brand from scratch and do not drift into generic SaaS or vendor-default dashboard styling.
+Build this product in the exact TBPN dashboard system defined in /docs/BRAND_BIBLE.md, /docs/DASHBOARD_ADDENDUM.md, /docs/TBPN_IMPLEMENTATION_RECIPES.md, and /docs/brand-tokens.json. Use /week-over-week-dashboard-working.html as the implementation benchmark, /tbpn-component-library.html as the reusable component reference, and /assets as the visual resource library. If the screen is workflow-heavy, decide first whether it is a focused Review Cockpit or a denser Analysis Table. Preserve the established header rail, active toggle treatment, chip system, KPI hierarchy, account-card title treatment, comparison bar treatment, grouped table styling, and surface-family logic. Use Rajdhani for dense compact controls when Michroma would become too small or fragile. Use only the approved animation classes from the Animations tab in /tbpn-component-library.html. After building, run the self-check in /docs/VALIDATION_CHECKLIST.md. Do not reinterpret the brand from scratch and do not drift into generic SaaS or vendor-default dashboard styling.
 ```
 
 For clean reusable component markup and approved examples, also inspect:

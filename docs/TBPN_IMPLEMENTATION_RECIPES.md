@@ -66,6 +66,13 @@ Use the `Gradients & Textures` tab as a surface chooser:
 }
 ```
 
+Font install note:
+
+- these variables define the approved font roles, but they do not install fonts on a machine
+- for local applications, native wrappers, local prototypes, and other system-font contexts, install `Michroma`, `Universal Sans`, `Rajdhani`, and `Microgramma D Extended Bold` first
+- do not assume GitHub or a cloned repo will provide desktop font installation
+- use the fallback stacks only when the context is truly web-only
+
 ## 2. Background Recipe
 
 ```css
@@ -249,6 +256,94 @@ When in doubt:
 - start with `Base Scanline`
 - move to louder variants only if the product context and readability budget can support them
 
+## 3D. Workflow Archetypes
+
+For workflow-heavy screens, choose the archetype before styling the details.
+
+### Review Cockpit
+
+Use this when the operator should move through a queue, vendor list, or approval flow with as little friction as possible.
+
+Default rules:
+
+- make this the default entry mode for review-heavy products
+- keep the main toggle focused-mode first and dense-mode second
+- keep the KPI row to the few metrics that change operator behavior
+- keep progress visible
+- hide dense analysis filters, extra dimensions, and secondary breakdowns by default
+- use `Rajdhani` for compact controls before shrinking `Michroma` too far
+
+Best for:
+
+- vendor-by-vendor review
+- approval/reclass queues
+- “next unreviewed” flows
+- any workflow where progression matters more than exploration
+
+Avoid using for:
+
+- full filter banks
+- dense analytical slices
+- month/tier/status/control overload
+
+### Analysis Table
+
+Use this when the operator needs denser filtering, table scanning, and broader comparison.
+
+Default rules:
+
+- this is the place for month chips, tier/status filters, grouped metrics, and denser controls
+- preserve readability even as density rises
+- keep table headers, pills, and action controls large enough to scan quickly
+- keep the denser mode visually premium, not spreadsheet-gray
+
+Best for:
+
+- broad transaction analysis
+- dense filter work
+- grouped tables
+- cross-cutting review and export views
+
+Avoid using for:
+
+- the default entry mode of a progression-heavy review product
+- the first surface an operator sees when they mainly need to approve the next item
+
+### Dense Workflow Type Floors
+
+Use these floors when the UI gets tight:
+
+- `Michroma 10-11px` for short, high-contrast structural labels only
+- `Rajdhani 10-12px bold` for toggles, chips, compact action buttons, status pills, and dense control copy
+- `Universal Sans 12-13px` for support text, helper notes, and quieter metadata
+
+If a dense control becomes weak in `Michroma`:
+
+- switch it to `Rajdhani`
+- brighten the text
+- or increase the size
+
+Do not solve dense workflow readability by leaving tiny muted chrome text in place.
+
+Starter rule block:
+
+```text
+Review Cockpit:
+- default this first for queue/review products
+- show only the few KPIs that move the operator forward
+- keep progress visible
+- hide dense analysis filters by default
+
+Analysis Table:
+- use for dense filtering, grouped tables, and cross-cut comparison
+- allow more controls here, but keep them readable
+
+Type floors:
+- Michroma 10-11px only for short structural labels
+- Rajdhani 10-12px for dense controls and pills
+- Universal Sans 12-13px for support copy
+```
+
 ## 4. Toggle Recipe
 
 ```css
@@ -302,6 +397,11 @@ When in doubt:
   text-shadow: none;
 }
 ```
+
+Dense workflow control note:
+
+- if the toggle or mode-switch copy becomes too dense, repeated, or small for clean `Michroma`, switch that layer to `Rajdhani 10-12px bold`
+- do not ship tiny `Michroma` control text just because the chrome voice is technically correct
 
 Rendered example:
 

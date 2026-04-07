@@ -26,6 +26,20 @@ Important context:
 - the component library's other texture families are approved extensions, not replacements for that baseline
 - the component library now uses the `Lifted Signal` rail as its default top header shell, but dashboard product rails should remain structurally conservative unless the product truly needs more lift
 
+## Workflow-heavy products
+
+If the product is not a general analytics dashboard, do not force it into the exact same composition.
+
+For review-heavy tools such as closes, approvals, reconciliations, or transaction classification:
+
+- choose the workflow archetype first:
+  - `Review Cockpit`
+  - `Analysis Table`
+- use the component library's `Workflow Modes` section as the reusable pattern reference
+- keep the review cockpit lighter, more decisive, and more progression-driven than a normal dashboard
+- let the denser table mode hold the extra filters, breakout dimensions, and audit density
+- switch compact controls, pills, and dense table chrome to `Rajdhani` before shrinking `Michroma` below readability
+
 ## 1. Final Dashboard Order
 
 Use this default order:

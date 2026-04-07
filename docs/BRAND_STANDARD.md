@@ -49,6 +49,20 @@ Treat this as `default + approved variants`, not one mandatory background recipe
 - `Rajdhani`: stronger readable voice for bold values, denser UI, and text that must hit harder
 - `Microgramma D Extended Bold` fallback stack: broadcast headline voice for giant promo/news/date moments only
 
+Font installation rule:
+
+- local applications and local design environments must have the approved fonts installed on the machine
+- GitHub does not install fonts for the agent
+- fallback stacks are acceptable for web-only work, not as the final answer for local app builds
+
+Dense workflow type floors:
+
+- `Michroma` is for short structural labels, not tiny dense control copy
+- treat `10-11px` as the floor for short high-contrast `Michroma` labels
+- use `Rajdhani 10-12px bold` for toggles, chips, status pills, compact buttons, and dense workflow controls
+- use `Universal Sans 12-13px` for support copy and quieter metadata that still needs to be readable
+- if muted steel text becomes hard to read, brighten it or enlarge it before adding more effect
+
 ## Header Standard
 
 Default header:
@@ -92,6 +106,27 @@ Approved context variants:
 
 Do not treat every family as equally valid everywhere.
 
+## Workflow Archetype Standard
+
+Choose one of these first for workflow-heavy screens:
+
+- `Review Cockpit`: focused review, approval, and progression mode
+- `Analysis Table`: denser analysis, filtering, and comparison mode
+
+Review Cockpit rules:
+
+- default this mode first for approval/review products
+- show the smallest KPI set that still moves the operator forward
+- keep progress visible
+- hide month/tier/status/filter clutter unless it is essential to the review step
+- keep the left-most main toggle on the focused mode and the denser mode to the right
+
+Analysis Table rules:
+
+- allow denser filters and segmented controls here
+- keep the table headers, pills, and buttons readable before they are “stylized”
+- do not let the denser mode inherit the visual weakness of spreadsheet-gray UI
+
 ## Control Standard
 
 Top toggles:
@@ -100,6 +135,7 @@ Top toggles:
 - green active state
 - dark text on active green
 - active state must pop more than inactive state
+- use `Rajdhani 10-12px bold` when the toggle copy is dense, repeated, or too small for clean `Michroma`
 
 Account chips:
 
@@ -107,6 +143,13 @@ Account chips:
 - slightly larger and bolder than default UI chips
 - green border
 - green-tinted active fill
+- use `Rajdhani` for chip text and dense filter controls before shrinking `Michroma` too far
+
+Action buttons and status pills:
+
+- keep them readable first, premium second
+- prefer `Rajdhani` for compact workflow actions and small state pills
+- do not ship tiny gray `Michroma` buttons that require squinting
 
 ## KPI Standard
 
@@ -123,6 +166,12 @@ KPI cards should feel:
 - scan-friendly
 - aligned
 - high-contrast
+
+For review-heavy screens:
+
+- use a smaller KPI set than a broad analysis surface
+- keep the KPI row focused on progress, completion, reviewed dollars, or the few metrics that change operator behavior
+- do not carry analytical clutter into the review cockpit just because it fits
 
 ## Account Card Standard
 
@@ -165,6 +214,7 @@ Use:
 - subtle zebra rhythm
 - brighter account names
 - light vertical separators between metric groups
+- enough text size and contrast that the table still reads fast at working distance
 
 ## Animation Standard
 

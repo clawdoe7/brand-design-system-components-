@@ -3496,6 +3496,240 @@ code{
   font-weight:400;
   color:#d3deea;
 }
+.workflow-demo-grid{
+  display:grid;
+  gap:14px;
+  margin-top:14px;
+}
+.workflow-shell{
+  display:grid;
+  gap:10px;
+  padding:14px;
+  border-radius:12px;
+  border:1px solid rgba(92,255,211,0.14);
+  background:
+    radial-gradient(circle at 78% 0%, rgba(106,255,210,0.09), transparent 32%),
+    linear-gradient(180deg, rgba(8,16,14,0.98), rgba(3,7,6,0.98)),
+    repeating-linear-gradient(180deg, rgba(90,230,191,0.07) 0 1px, rgba(90,230,191,0) 1px 6px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.03);
+}
+.workflow-shell.analysis{
+  background:
+    radial-gradient(circle at 72% 0%, rgba(106,255,210,0.06), transparent 34%),
+    linear-gradient(180deg, rgba(6,12,11,0.99), rgba(2,6,6,0.99)),
+    repeating-linear-gradient(180deg, rgba(90,230,191,0.045) 0 1px, rgba(90,230,191,0) 1px 7px);
+}
+.workflow-shell-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+}
+.workflow-shell-title{
+  font-family:"Michroma",sans-serif;
+  font-size:12px;
+  letter-spacing:0.07em;
+  text-transform:uppercase;
+  color:#eef4fb;
+}
+.workflow-shell-badge{
+  padding:4px 9px 3px;
+  border-radius:999px;
+  background:linear-gradient(180deg, rgba(23,48,40,0.9), rgba(8,18,15,0.96));
+  border:1px solid rgba(109,255,212,0.18);
+  color:#8ef5d1;
+  font-family:"Rajdhani",sans-serif;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.035em;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+.workflow-shell-copy{
+  font-family:"Universal Sans","Rajdhani",sans-serif;
+  font-size:13px;
+  line-height:1.4;
+  color:#dce8f3;
+  max-width:68ch;
+}
+.workflow-kpi-row{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+}
+.workflow-kpi{
+  padding:10px 11px 9px;
+  border-radius:10px;
+  border:1px solid rgba(131,255,210,0.10);
+  background:linear-gradient(180deg, rgba(5,10,9,0.96), rgba(2,5,5,0.98));
+  display:grid;
+  gap:4px;
+}
+.workflow-kpi span{
+  font-family:"Michroma",sans-serif;
+  font-size:9px;
+  letter-spacing:0.07em;
+  text-transform:uppercase;
+  color:#94aabd;
+}
+.workflow-kpi strong{
+  font-family:"Rajdhani",sans-serif;
+  font-size:32px;
+  line-height:0.92;
+  font-weight:700;
+  color:#f1f6fb;
+}
+.workflow-kpi small{
+  font-family:"Universal Sans","Rajdhani",sans-serif;
+  font-size:12px;
+  line-height:1.35;
+  color:#b7c9d9;
+}
+.workflow-toggle-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  align-items:center;
+}
+.workflow-toggle{
+  min-height:28px;
+  padding:6px 12px 5px;
+  border-radius:7px;
+  border:1px solid rgba(131,255,210,0.11);
+  background:linear-gradient(180deg, rgba(8,14,13,0.98), rgba(3,7,6,0.98));
+  color:#d8e4ee;
+  font-family:"Rajdhani",sans-serif;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+}
+.workflow-toggle.ac,
+.workflow-toggle.cta{
+  color:#07130f;
+  border-color:rgba(123,255,212,0.30);
+  background:linear-gradient(180deg, #9fffe0 0%, #47dcae 46%, #15b483 100%);
+}
+.workflow-toggle.ghost{
+  color:#a9bbc9;
+}
+.workflow-progress{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto;
+  gap:10px;
+  align-items:center;
+}
+.workflow-progress span{
+  font-family:"Michroma",sans-serif;
+  font-size:9px;
+  letter-spacing:0.07em;
+  text-transform:uppercase;
+  color:#93a9bc;
+}
+.workflow-progress strong{
+  font-family:"Rajdhani",sans-serif;
+  font-size:13px;
+  font-weight:700;
+  color:#96ffd9;
+}
+.workflow-progress-track{
+  height:6px;
+  border-radius:999px;
+  background:rgba(86,106,116,0.18);
+  overflow:hidden;
+}
+.workflow-progress-fill{
+  height:100%;
+  border-radius:inherit;
+  background:linear-gradient(90deg, #4ee0b2 0%, #8cffe0 100%);
+}
+.workflow-filter-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+.workflow-filter{
+  min-height:24px;
+  padding:5px 9px 4px;
+  border-radius:6px;
+  border:1px solid rgba(131,255,210,0.10);
+  background:rgba(4,10,9,0.96);
+  color:#c7d4df;
+  font-family:"Rajdhani",sans-serif;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:0.035em;
+  text-transform:uppercase;
+}
+.workflow-filter.ac{
+  background:linear-gradient(180deg, rgba(112,255,216,0.30), rgba(22,128,97,0.30));
+  color:#a6ffe3;
+  border-color:rgba(131,255,210,0.18);
+}
+.workflow-table-preview{
+  display:grid;
+  border-radius:10px;
+  overflow:hidden;
+  border:1px solid rgba(131,255,210,0.10);
+  background:linear-gradient(180deg, rgba(2,6,6,0.92), rgba(1,4,4,0.98));
+}
+.workflow-head-row,
+.workflow-row{
+  display:grid;
+  grid-template-columns:72px 1.7fr 110px 84px 70px;
+  gap:10px;
+  align-items:center;
+  padding:8px 10px;
+}
+.workflow-head-row{
+  font-family:"Rajdhani",sans-serif;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  color:#95aabc;
+  background:rgba(12,28,23,0.70);
+}
+.workflow-row{
+  border-top:1px solid rgba(159,177,202,0.06);
+  font-family:"Rajdhani",sans-serif;
+  font-size:12px;
+  line-height:1.35;
+  color:#dbe7f2;
+}
+.workflow-row .workflow-amt{
+  font-weight:700;
+  color:#8ef6d1;
+}
+.workflow-row .workflow-status{
+  justify-self:start;
+  min-height:20px;
+  padding:3px 7px 2px;
+  border-radius:5px;
+  background:rgba(19,71,55,0.68);
+  color:#9fffdc;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:0.03em;
+  text-transform:uppercase;
+}
+.workflow-row .workflow-action{
+  justify-self:start;
+  min-height:22px;
+  padding:4px 8px 3px;
+  border-radius:6px;
+  background:rgba(7,13,13,0.98);
+  border:1px solid rgba(131,255,210,0.12);
+  color:#edf4fb;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.035em;
+  text-transform:uppercase;
+}
+.workflow-analysis-table .workflow-head-row,
+.workflow-analysis-table .workflow-row{
+  grid-template-columns:72px 110px 1.65fr 110px 74px 84px 72px;
+}
 .font-rule-grid{
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
@@ -4977,6 +5211,7 @@ code{
       <div class="nav-links">
         <a href="#layout-rails">Layout Rails</a>
         <a href="#toggles">Toggles</a>
+        <a href="#workflow-modes">Workflow Modes</a>
         <a href="#chips">Chips</a>
         <a href="#kpi-cards">KPI Cards</a>
         <a href="#account-cards">Account Cards</a>
@@ -5068,6 +5303,127 @@ code{
   &lt;/div&gt;
 &lt;/div&gt;</code></pre>
           <div class="class-note">Use the exact `wk-btn/view-btn` active treatment shown here. The active state must be obvious before any hover or motion is applied.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="lib-section" id="workflow-modes">
+      <div class="lib-head">
+        <div class="dot"></div>
+        <h2>Workflow Modes</h2>
+        <p>Workflow-heavy products should choose a mode first: a focused review cockpit or a denser analysis table.</p>
+      </div>
+      <div class="lib-grid">
+        <div class="lib-card">
+          <div class="demo-title">Approved Example</div>
+          <div class="demo-note">Do not clone a general dashboard when the product is really a review tool. Start with the focused cockpit, then let the denser table mode hold extra filters, dimensions, and analytical density.</div>
+          <div class="workflow-demo-grid">
+            <div class="workflow-shell">
+              <div class="workflow-shell-head">
+                <div class="workflow-shell-title">Review Cockpit</div>
+                <div class="workflow-shell-badge">Default review flow</div>
+              </div>
+              <div class="workflow-shell-copy">Vendor-by-vendor review mode. Keep only the metrics, progress, and next-step controls that help the operator move through work quickly.</div>
+              <div class="workflow-kpi-row">
+                <div class="workflow-kpi">
+                  <span>Total</span>
+                  <strong>$394k</strong>
+                  <small>2,742 transactions</small>
+                </div>
+                <div class="workflow-kpi">
+                  <span>Reviewed</span>
+                  <strong>$351k</strong>
+                  <small>89% approved</small>
+                </div>
+                <div class="workflow-kpi">
+                  <span>Vendors</span>
+                  <strong>287/325</strong>
+                  <small>38 left to clear</small>
+                </div>
+              </div>
+              <div class="workflow-toggle-row">
+                <div class="workflow-toggle ac">Vendor</div>
+                <div class="workflow-toggle">Table</div>
+                <div class="workflow-toggle ghost">Unreviewed</div>
+                <div class="workflow-toggle cta">Next</div>
+              </div>
+              <div class="workflow-progress">
+                <span>Progress</span>
+                <div class="workflow-progress-track"><div class="workflow-progress-fill" style="width:89%;"></div></div>
+                <strong>89%</strong>
+              </div>
+              <div class="workflow-table-preview">
+                <div class="workflow-head-row">
+                  <div>Date</div><div>Memo</div><div>Amount</div><div>Status</div><div>Action</div>
+                </div>
+                <div class="workflow-row">
+                  <div>01-04</div><div>FACEBK *3DQXEF4472</div><div class="workflow-amt">$900.00</div><div class="workflow-status">Correct</div><div class="workflow-action">OK</div>
+                </div>
+                <div class="workflow-row">
+                  <div>01-09</div><div>FACEBK *XALB2G6472</div><div class="workflow-amt">$192.91</div><div class="workflow-status">Pending</div><div class="workflow-action">Reclass</div>
+                </div>
+              </div>
+            </div>
+            <div class="workflow-shell analysis">
+              <div class="workflow-shell-head">
+                <div class="workflow-shell-title">Analysis Table</div>
+                <div class="workflow-shell-badge">Dense mode</div>
+              </div>
+              <div class="workflow-shell-copy">Analytical mode for dense filtering, auditing, and breakdown work. This is where months, tiers, statuses, and other dimensions belong.</div>
+              <div class="workflow-toggle-row">
+                <div class="workflow-toggle">Vendor</div>
+                <div class="workflow-toggle ac">Table</div>
+              </div>
+              <div class="workflow-filter-row">
+                <div class="workflow-filter ac">All</div>
+                <div class="workflow-filter">Jan</div>
+                <div class="workflow-filter">Tier A</div>
+                <div class="workflow-filter">Needs Review</div>
+                <div class="workflow-filter">COGS</div>
+                <div class="workflow-filter">FB Verified</div>
+              </div>
+              <div class="workflow-table-preview workflow-analysis-table">
+                <div class="workflow-head-row">
+                  <div>Date</div><div>Vendor</div><div>Memo</div><div>Amount</div><div>Type</div><div>Status</div><div>Action</div>
+                </div>
+                <div class="workflow-row">
+                  <div>01-04</div><div>Facebook</div><div>FACEBK *3DQXEF4472</div><div class="workflow-amt">$900.00</div><div>COGS</div><div class="workflow-status">Correct</div><div class="workflow-action">OK</div>
+                </div>
+                <div class="workflow-row">
+                  <div>01-13</div><div>Facebook</div><div>FACEBK *FZ9WPFU372</div><div class="workflow-amt">$900.00</div><div>COGS</div><div class="workflow-status">Needs</div><div class="workflow-action">Review</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="code-card">
+          <div class="code-head">
+            <h3>Copyable Rule Block</h3>
+            <button class="copy-btn" data-copy-target="code-workflow">Copy</button>
+          </div>
+          <pre><code id="code-workflow">Workflow-heavy TBPN screens:
+
+- choose a mode first:
+  - Review Cockpit
+  - Analysis Table
+
+Review Cockpit:
+- default entry mode for approval/review flows
+- show only progress-driving KPIs
+- keep focused mode on the left, dense mode on the right
+- hide heavy filters and extra dimensions by default
+- use Rajdhani for compact controls, pills, and actions
+
+Analysis Table:
+- use when filters, breakouts, and auditing density are required
+- keep the dense controls here, not in the cockpit
+- raise readability as density increases
+
+Type floors:
+- do not push Michroma below 10px in dense product UI
+- use Rajdhani 10-12px bold for compact controls and table chrome
+- keep support text readable before making it more muted</code></pre>
+          <div class="class-note">If the screen is operator-driven, start with the workflow archetype before choosing surfaces or KPI density. This is the fastest way to avoid overbuilding the review mode.</div>
         </div>
       </div>
     </section>
@@ -7783,7 +8139,7 @@ code{
               </div>
               <div>
                 <div class="k">System Label</div>
-                <div class="v">Michroma 9-11px uppercase</div>
+                <div class="v">Michroma 10-11px uppercase, short only</div>
                 <div class="sample sample-display-label">All Metrics</div>
               </div>
             </div>
@@ -7802,8 +8158,8 @@ code{
                 <div class="sample sample-support-secondary">Smaller notes should still feel clean, modern, and readable.</div>
               </div>
               <div>
-                <div class="k">Dense Utility</div>
-                <div class="v">Rajdhani 11-12px bold</div>
+                <div class="k">Operational Controls</div>
+                <div class="v">Rajdhani 10-12px bold</div>
                 <div class="sample sample-ui-dense">WK1 / WK2 / CHG</div>
               </div>
               <div>
@@ -7847,20 +8203,20 @@ code{
       </section>
 
       <section class="lib-section" id="font-rules">
-        <div class="lib-head">
-          <div class="dot"></div>
-          <h2>Usage Rules</h2>
-          <p>Keep the hierarchy disciplined so the display voice doesn’t overpower the product.</p>
-        </div>
-        <div class="lib-grid">
-          <div class="lib-card">
-            <div class="demo-title">Approved Rules</div>
-            <div class="demo-note">Michroma is for structure and signal. Universal Sans is for regular support copy. Rajdhani is for stronger readable UI and throughput. Microgramma Extended Bold is for giant editorial or broadcast headlines, with italic reserved for short high-energy kickers and chyron straps only. If something feels hard to read, fix contrast, spacing, or size before introducing a new font.</div>
-            <div class="font-decision-list">
-              <div class="font-decision">
-                <div class="num">1</div>
-                <div>
-                  <strong>Is it structural chrome?</strong>
+      <div class="lib-head">
+        <div class="dot"></div>
+        <h2>Usage Rules</h2>
+        <p>Keep the hierarchy disciplined so the display voice doesn’t overpower the product.</p>
+      </div>
+      <div class="lib-grid">
+        <div class="lib-card">
+          <div class="demo-title">Approved Rules</div>
+          <div class="demo-note">Michroma is for structure and signal. Universal Sans is for regular support copy. Rajdhani is for stronger readable UI and throughput. Microgramma Extended Bold is for giant editorial or broadcast headlines, with italic reserved for short high-energy kickers and chyron straps only. In dense workflow screens, do not keep shrinking Michroma to force brand feel into tiny controls. Cut to Rajdhani instead.</div>
+          <div class="font-decision-list">
+            <div class="font-decision">
+              <div class="num">1</div>
+              <div>
+                <strong>Is it structural chrome?</strong>
                   <span>If it is a rail title, tab, label, section heading, or system-facing UI title, use <code>Michroma</code>.</span>
                 </div>
               </div>
@@ -7875,7 +8231,7 @@ code{
                 <div class="num">3</div>
                 <div>
                   <strong>Does it need punch and readability?</strong>
-                  <span>If it is a KPI value, dense utility label, or stronger operational text, use <code>Rajdhani</code>.</span>
+                  <span>If it is a KPI value, dense utility label, compact action, status pill, or stronger operational text, use <code>Rajdhani</code>.</span>
                 </div>
               </div>
               <div class="font-decision">
@@ -7903,6 +8259,11 @@ code{
                 <div class="example ui">4,837</div>
               </div>
               <div class="font-rule-card good">
+                <h5>Cut To Rajdhani In Dense Tools</h5>
+                <p>If buttons, toggles, pills, or table headers start getting tiny, switch that role to Rajdhani instead of shrinking Michroma below readability.</p>
+                <div class="example ui">Vendor / Table / Next</div>
+              </div>
+              <div class="font-rule-card good">
                 <h5>Use Microgramma For Broadcast Moments</h5>
                 <p>Only giant promo slugs, news bars, and date/event strips should jump to the broadcast headline voice.</p>
                 <div class="example broadcast">Netflix Set To Buy Warner Bros</div>
@@ -7911,6 +8272,11 @@ code{
                 <h5>Do Not Use Too Much Chrome</h5>
                 <p>If regular body copy is set in Michroma, the interface becomes harder to read and too samey.</p>
                 <div class="example bad-example">Do not write paragraphs in chrome voice.</div>
+              </div>
+              <div class="font-rule-card bad">
+                <h5>Do Not Shrink Michroma Too Far</h5>
+                <p>Very small filters, pills, and table chrome should not live at fragile 7-9px Michroma just to preserve the look. Readability wins first.</p>
+                <div class="example bad-example">Tiny chrome text is not a premium UI.</div>
               </div>
               <div class="font-rule-card bad">
                 <h5>Do Not Use Broadcast For UI</h5>
@@ -7933,11 +8299,13 @@ Do:
 - use Michroma for headings, labels, rails, tabs, and system UI
 - use Universal Sans for regular support copy, helper text, and explanatory text
 - use Rajdhani for bold values, denser product text, and stronger readable UI
+- cut compact controls, pills, and table headers to Rajdhani before shrinking Michroma below readability
 - use the broadcast font for giant promo/news/date headlines, with italic only for short kicker or chyron straps
 
 Do not:
 - introduce generic system fonts as the primary voice
 - use Michroma for long paragraphs
+- force tiny workflow controls into 7-9px Michroma just to keep the chrome voice
 - use the broadcast font for normal dashboard UI
 - use broadcast italic for long headlines or body copy
 - solve hierarchy issues by adding more font families</code></pre>

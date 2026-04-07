@@ -166,6 +166,31 @@ Always choose readability first.
 - Never use the broadcast headline voice for tabs, chips, KPI labels, dense dashboard UI, or paragraph text.
 - If the exact licensed broadcast font is unavailable, preserve the role by using the documented fallback stack instead of inventing a new fourth voice.
 
+### Dense Workflow Type Floor
+
+For dense operational products, the small-type layer must stay readable before it stays “chrome.”
+
+- Treat `Michroma` as the structural voice, not the default answer for every small control.
+- `Michroma` below `10px` should be considered unsafe for dense workflow UI unless the label is extremely short and very high contrast.
+- For toggles, chips, status pills, action buttons, and fast-read workflow controls, switch to `Rajdhani 10-12px bold` before shrinking `Michroma` too far.
+- Use `Universal Sans 12-13px` as the minimum floor for support copy, helper notes, and quieter metadata that still needs to be read at working distance.
+- If muted chrome text becomes hard to read, brighten the text or increase size before adding more glow, texture, or decorative weight.
+
+### Workflow Typography Cutover
+
+Use these cutovers:
+
+- rail titles, short structural labels, and section headers: `Michroma`
+- KPI values, counts, workflow buttons, compact pills, toggle text, and dense control copy: `Rajdhani`
+- explanatory copy, help text, and support metadata: `Universal Sans`
+- giant promo/editorial moments only: `Microgramma D Extended Bold`
+
+### Font Availability Rule
+
+- For local applications, local prototypes, native app shells, and any machine-rendered design workflow, the approved fonts must be installed on the machine.
+- Do not assume GitHub or a local clone installs fonts automatically.
+- Web-only implementations may use the documented fallback stacks when necessary, but local app work should not be approved until the actual installed fonts are available.
+
 ## 6. Final Color System
 
 ### Core Colors
@@ -276,6 +301,29 @@ Headers, sidebars, and ClickUp-style shell references belong to the same surface
 The five workspace-shell looks at the bottom of `Gradients & Textures` are approved reference variants.
 
 The default component-library shell still uses the `Lifted Signal` top rail.
+
+### Workflow Archetype Rule
+
+For workflow-heavy products, choose the interface archetype before styling the details.
+
+Approved archetypes:
+
+- `Review Cockpit`: focused, progression-driven, low-clutter mode for vendor-by-vendor or item-by-item approval work
+- `Analysis Table`: denser, filter-heavy, comparison-friendly mode for scanning, sorting, and cross-cutting review
+
+Review Cockpit rules:
+
+- make this the default entry mode for approval/review workflows unless the product explicitly says otherwise
+- keep the KPI row tight and limited to the few metrics that move the operator forward
+- keep progress visible
+- hide dense analytical filters and dimensions unless they are truly needed in the moment
+- keep the main toggle order focused-mode first and dense-mode second
+
+Analysis Table rules:
+
+- this is where dense filters, segmented controls, secondary dimensions, and full table analysis belong
+- keep the typography cleaner and more readable than a spreadsheet, even when the information density increases
+- do not let muted labels or tiny chrome text outrank scan-speed
 
 ## 8. Header Rail System
 
